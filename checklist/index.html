@@ -4,7 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>旅行清單</title>
-    <style> /* ... (同上一個回答的 CSS) ... */ </style>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+        }
+
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 15px;
+            color: var(--text-main);
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { margin: 0; font-size: 1.5em; color: var(--primary-color); }
+
+        /* 置頂進度條 */
+        .sticky-progress {
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            padding: 10px 0;
+            z-index: 10;
+            border-bottom: 1px solid #eee;
+        }
+        .progress-bar-bg {
+            background-color: #eee;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* 分類樣式 */
+        .category-title {
+            margin: 25px 0 10px 0;
+            padding: 8px 12px;
+            background: #f1f3f5;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95em;
+            color: var(--text-main);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* 項目樣式 */
+        .item-row {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 10px;
+            border-bottom: 1px solid #f1f1f1;
+            cursor: pointer;
+        }
+        .item-row input {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            margin-top: 3px;
+        }
+        .item-content { flex: 1; }
+        .item-label { font-size: 1em; display: block; }
+        .item-desc { font-size: 0.8em; color: #777; margin-top: 2px; }
+
+        input:checked + .item-content .item-label {
+            text-decoration: line-through;
+            color: #bbb;
+        }
+
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background: #fff;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
