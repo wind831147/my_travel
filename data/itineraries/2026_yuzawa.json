@@ -1,0 +1,132 @@
+[
+    {
+        "date": "2026-01-14 (三)",
+        "events": [
+            {
+                "time": "06:10",
+                "type": "flight",
+                "title": "桃園機場出發",
+                "desc": "TPE -> NRT",
+                "icon": "🛫"
+            },
+            {
+                "time": "10:35",
+                "type": "arrival",
+                "title": "抵達成田機場",
+                "desc": "入境審查、領取行李",
+                "icon": "🛬"
+            },
+            {
+                "time": "12:22",
+                "type": "train",
+                "title": "搭乘 Skyliner",
+                "desc": "成田機場 -> 京成上野",
+                "icon": "🚄"
+            },
+            {
+                "time": "13:09",
+                "type": "arrival",
+                "title": "抵達京成上野",
+                "desc": "轉乘新幹線",
+                "icon": "📍"
+            },
+            {
+                "time": "13:46",
+                "type": "train",
+                "title": "搭乘新幹線",
+                "desc": "上野 -> 越後湯澤",
+                "icon": "🚄"
+            },
+            {
+                "time": "14:56",
+                "type": "arrival",
+                "title": "抵達越後湯澤",
+                "desc": "前往飯店 check-in",
+                "icon": "❄️"
+            }
+        ]
+    },
+    {
+        "date": "2026-01-15 (四)",
+        "events": [
+            {
+                "time": "09:00",
+                "type": "activity",
+                "title": "滑雪行程 Day 1",
+                "desc": "GALA / 湯澤高原 / 石打丸山",
+                "icon": "🎿"
+            }
+        ]
+    },
+    {
+        "date": "2026-01-16 (五)",
+        "events": [
+            {
+                "time": "09:00",
+                "type": "activity",
+                "title": "滑雪行程 Day 2",
+                "desc": "享受粉雪！",
+                "icon": "🎿"
+            }
+        ]
+    },
+    {
+        "date": "2026-01-17 (六)",
+        "events": [
+            {
+                "time": "09:00",
+                "type": "activity",
+                "title": "滑雪行程 Day 3 (半天)",
+                "desc": "最後衝刺",
+                "icon": "🎿"
+            },
+            {
+                "time": "16:00",
+                "type": "checkout",
+                "title": "整理行李 & 退房",
+                "desc": "前往車站",
+                "icon": "🏨"
+            },
+            {
+                "time": "18:32",
+                "type": "train",
+                "title": "搭乘新幹線",
+                "desc": "越後湯澤 -> 上野",
+                "icon": "🚄"
+            },
+            {
+                "time": "19:46",
+                "type": "arrival",
+                "title": "抵達上野",
+                "desc": "晚餐 / 住宿",
+                "icon": "📍"
+            }
+        ]
+    },
+    {
+        "date": "2026-01-18 (日)",
+        "events": [
+            {
+                "time": "17:00",
+                "type": "train",
+                "title": "前往成田機場",
+                "desc": "Skyliner (時間未定)",
+                "icon": "🚄"
+            },
+            {
+                "time": "20:25",
+                "type": "flight",
+                "title": "成田機場出發",
+                "desc": "NRT -> TPE",
+                "icon": "🛫"
+            },
+            {
+                "time": "23:25",
+                "type": "arrival",
+                "title": "抵達桃園機場",
+                "desc": "甜蜜的家",
+                "icon": "🏠"
+            }
+        ]
+    }
+]

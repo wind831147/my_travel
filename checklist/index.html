@@ -125,6 +125,105 @@
             cursor: pointer;
             font-weight: bold;
         }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: #f1f3f5;
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #7f8c8d;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: #fff;
+            color: var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Timeline Styles */
+        .timeline-container {
+            display: none;
+            /* Hidden by default */
+            padding: 10px 0;
+        }
+
+        .timeline-date {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin: 20px 0 15px 0;
+            font-size: 0.9em;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 25px;
+            border-left: 2px solid #ddd;
+            margin-left: 10px;
+        }
+
+        .timeline-item:last-child {
+            border-left: 2px solid transparent;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .timeline-time {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .timeline-content {
+            background: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            font-size: 1em;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+
+        .timeline-desc {
+            font-size: 0.85em;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -143,7 +242,14 @@
             </div>
             <p id="progressText">0%</p>
         </div>
+
+        <div class="tabs" id="mainTabs">
+            <div class="tab active" onclick="switchTab('checklist')">準備清單</div>
+            <div class="tab" onclick="switchTab('itinerary')">行程表</div>
+        </div>
+
         <div id="checklistRenderRoot"></div>
+        <div id="itineraryRenderRoot" class="timeline-container"></div>
 
         <div id="tripNotesSection" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
             <h3>📝 旅行筆記</h3>
@@ -205,6 +311,13 @@
                     // 覆蓋標題為行程標題
                     config.subtitle = config.title;
                     config.title = trip.title;
+
+                    // Load Itinerary if exists
+                    if (trip.itinerary) {
+                        loadItinerary(trip.itinerary);
+                    } else {
+                        document.getElementById('mainTabs').style.display = 'none'; // Hide tabs if no itinerary
+                    }
                 }
 
                 // --- 新增排序邏輯 ---
@@ -221,6 +334,63 @@
                 console.error("無法讀取設定檔:", error);
                 document.getElementById('mainTitle').innerText = "載入失敗";
                 document.getElementById('subTitle').innerText = error.message;
+            }
+        }
+
+        async function loadItinerary(filename) {
+            try {
+                const response = await fetch(`../data/itineraries/${filename}`);
+                const days = await response.json();
+                const root = document.getElementById('itineraryRenderRoot');
+                root.innerHTML = '';
+
+                days.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'timeline-date';
+                    dayHeader.innerText = day.date;
+                    root.appendChild(dayHeader);
+
+                    day.events.forEach(event => {
+                        const item = document.createElement('div');
+                        item.className = 'timeline-item';
+                        item.innerHTML = `
+                        <div class="timeline-dot">${event.icon || '•'}</div>
+                        <div class="timeline-time">${event.time}</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">${event.title}</div>
+                            ${event.desc ? `<div class="timeline-desc">${event.desc}</div>` : ''}
+                        </div>
+                    `;
+                        root.appendChild(item);
+                    });
+                });
+            } catch (e) {
+                console.error("Failed to load itinerary", e);
+                document.getElementById('itineraryRenderRoot').innerHTML = '<p style="text-align:center; color:#999;">無法載入行程表</p>';
+            }
+        }
+
+        function switchTab(tabName) {
+            const checklistRoot = document.getElementById('checklistRenderRoot');
+            const itineraryRoot = document.getElementById('itineraryRenderRoot');
+            const tabs = document.querySelectorAll('.tab');
+
+            tabs.forEach(t => t.classList.remove('active'));
+
+            if (tabName === 'checklist') {
+                checklistRoot.style.display = 'block';
+                itineraryRoot.style.display = 'none';
+                tabs[0].classList.add('active');
+                // Show notes and buttons
+                document.getElementById('tripNotesSection').style.display = 'block';
+                document.getElementById('statusBtn').parentElement.style.display = 'flex';
+            } else {
+                checklistRoot.style.display = 'none';
+                itineraryRoot.style.display = 'block';
+                tabs[1].classList.add('active');
+                // Hide notes and buttons in itinerary view
+                document.getElementById('tripNotesSection').style.display = 'none';
+                document.getElementById('statusBtn').parentElement.style.display = 'none';
             }
         }
 
