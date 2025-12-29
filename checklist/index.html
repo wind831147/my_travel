@@ -145,7 +145,7 @@
         </div>
         <div id="checklistRenderRoot"></div>
 
-        <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+        <div id="tripNotesSection" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
             <h3>📝 旅行筆記</h3>
             <textarea id="tripNotes"
                 style="width: 100%; height: 150px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;"
@@ -168,32 +168,44 @@
             try {
                 // 1. 解析 URL 參數
                 const urlParams = new URLSearchParams(window.location.search);
+                const mode = urlParams.get('mode');
                 const tripId = urlParams.get('tripId');
 
-                if (!tripId) {
-                    alert("未指定行程 ID");
-                    window.location.href = '../index.html';
-                    return;
+                let config;
+
+                if (mode === 'universal') {
+                    currentTripId = 'universal';
+                    const templateResponse = await fetch('../data/templates/universal.json');
+                    config = await templateResponse.json();
+
+                    // Universal Mode UI Adjustments
+                    document.getElementById('tripNotesSection').style.display = 'none';
+                    document.getElementById('statusBtn').style.display = 'none';
+                } else {
+                    if (!tripId) {
+                        alert("未指定行程 ID");
+                        window.location.href = '../index.html';
+                        return;
+                    }
+                    currentTripId = tripId;
+
+                    // 2. 讀取行程總表，找出對應的 template
+                    const tripsResponse = await fetch('../data/trips.json');
+                    const trips = await tripsResponse.json();
+                    const trip = trips.find(t => t.id === tripId);
+
+                    if (!trip) {
+                        throw new Error("找不到此行程");
+                    }
+
+                    // 3. 讀取 Template
+                    const templateResponse = await fetch(`../data/templates/${trip.template}`);
+                    config = await templateResponse.json();
+
+                    // 覆蓋標題為行程標題
+                    config.subtitle = config.title;
+                    config.title = trip.title;
                 }
-                currentTripId = tripId;
-
-                // 2. 讀取行程總表，找出對應的 template
-                const tripsResponse = await fetch('../data/trips.json');
-                const trips = await tripsResponse.json();
-                const trip = trips.find(t => t.id === tripId);
-
-                if (!trip) {
-                    throw new Error("找不到此行程");
-                }
-
-                // 3. 讀取 Template
-                const templateResponse = await fetch(`../data/templates/${trip.template}`);
-                const config = await templateResponse.json();
-
-                // 覆蓋標題為行程標題 (可選，或保留 template 標題)
-                // 這裡我們選擇顯示行程標題，副標題顯示 template 標題
-                config.subtitle = config.title;
-                config.title = trip.title;
 
                 // --- 新增排序邏輯 ---
                 if (config.categories) {
