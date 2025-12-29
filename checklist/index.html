@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的出國準備清單</title>
+    <style>
+        /* --- 樣式設計 (CSS) --- */
+        :root {
+            --primary-color: #4a90e2;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+
+        /* 進度條 */
+        .progress-container {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+            height: 100%;
+            width: 0%; /* JS 會動態控制這裡 */
+            transition: width 0.3s ease;
+        }
+
+        .category {
+            margin-top: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .item:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* 隱藏原生 checkbox，用自定義的比較好看 */
+        input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        /* 勾選後的文字樣式 */
+        input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background-color: #ff5252;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✈️ 出國必備清單</h1>
+    <p class="subtitle">自動儲存進度，關掉網頁也不會不見！</p>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <p style="text-align: center; font-size: 0.8em;" id="progressText">0% 完成</p>
+
+    <div id="checklist">
+        <div class="category">🪪 證件與錢財</div>
+        <label class="item"><input type="checkbox" id="passport"><span>護照 (效期六個月以上)</span></label>
+        <label class="item"><input type="checkbox" id="visa"><span>簽證 / 入境 QR Code</span></label>
+        <label class="item"><input type="checkbox" id="cash"><span>外幣現金</span></label>
+        <label class="item"><input type="checkbox" id="creditcard"><span>信用卡 (確認海外回饋)</span></label>
+
+        <div class="category">📱 電子產品</div>
+        <label class="item"><input type="checkbox" id="sim"><span>網卡 / eSim 設定</span></label>
+        <label class="item"><input type="checkbox" id="powerbank"><span>行動電源 (放隨身行李)</span></label>
+        <label class="item"><input type="checkbox" id="adapter"><span>萬用轉接頭</span></label>
+        <label class="item"><input type="checkbox" id="charger"><span>充電線 x 2</span></label>
+
+        <div class="category">👕 衣物與生活</div>
+        <label class="item"><input type="checkbox" id="clothes"><span>換洗衣物 (洋蔥式穿法)</span></label>
+        <label class="item"><input type="checkbox" id="pajamas"><span>睡衣</span></label>
+        <label class="item"><input type="checkbox" id="medicine"><span>常備藥品 (感冒/腸胃/止痛)</span></label>
+        <label class="item"><input type="checkbox" id="mask"><span>備用口罩</span></label>
+    </div>
+
+    <button class="reset-btn" onclick="resetList()">❌ 清除所有勾選 (重新整理)</button>
+</div>
+
+<script>
+    // --- 程式邏輯 (JavaScript) ---
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    // 1. 網頁載入時，從 LocalStorage 讀取紀錄
+    function loadState() {
+        checkboxes.forEach(box => {
+            const isChecked = localStorage.getItem(box.id) === 'true';
+            box.checked = isChecked;
+        });
+        updateProgress();
+    }
+
+    // 2. 當使用者勾選時，儲存狀態並更新進度
+    checkboxes.forEach(box => {
+        box.addEventListener('change', () => {
+            localStorage.setItem(box.id, box.checked); // 儲存 true/false
+            updateProgress();
+        });
+    });
+
+    // 3. 更新進度條的功能
+    function updateProgress() {
+        const total = checkboxes.length;
+        const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+        const percent = Math.round((checked / total) * 100);
+
+        progressBar.style.width = percent + '%';
+        progressText.innerText = `${percent}% 完成 (${checked}/${total})`;
+        
+        if(percent === 100) {
+            progressText.innerText = "🎉 太棒了！準備出發！";
+        }
+    }
+
+    // 4. 清除重置按鈕
+    function resetList() {
+        if(confirm("確定要清除所有勾選狀態嗎？")) {
+            checkboxes.forEach(box => {
+                box.checked = false;
+                localStorage.removeItem(box.id);
+            });
+            updateProgress();
+        }
+    }
+
+    // 啟動！
+    loadState();
+</script>
+
+</body>
+</html>
