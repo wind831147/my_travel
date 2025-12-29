@@ -125,6 +125,16 @@
             // 讀取同目錄下的 config.json
             const response = await fetch('./config.json');
             const config = await response.json();
+
+            // --- 新增排序邏輯 ---
+            if (config.categories) {
+                config.categories.sort((a, b) => {
+                    // 如果沒有定義 sort，預設放最後面 (999)
+                    const sortA = a.sort !== undefined ? a.sort : 999;
+                    const sortB = b.sort !== undefined ? b.sort : 999;
+                    return sortA - sortB;
+                });
+            }
             
             renderChecklist(config);
         } catch (error) {
