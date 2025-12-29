@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>出國準備清單</title>
+    <title>我的旅行準備清單 🌍</title>
     <style>
         :root {
             --primary-color: #3498db;
-            --daily-color: #9b59b6;
-            --ski-color: #2c3e50;
-            --ticket-color: #27ae60;
-            --transport-color: #e67e22;
-            --bg-color: #f8f9fa;
+            --daily-color: #2ecc71;
+            --transport-color: #f39c12;
+            --special-color: #e74c3c;
+            --ski-color: #34495e;
+            --bg-color: #f4f7f6;
             --card-bg: #ffffff;
         }
 
@@ -58,7 +58,7 @@
 
         .category {
             margin: 20px 0 10px 0;
-            padding: 6px 12px;
+            padding: 8px 12px;
             background: #f1f3f5;
             border-radius: 8px;
             font-weight: bold;
@@ -91,21 +91,14 @@
         .item-title { font-size: 1em; }
         .item-desc { font-size: 0.8em; color: #777; margin-top: 2px; }
 
-        .link-tag {
-            font-size: 0.75em;
-            color: var(--primary-color);
-            text-decoration: none;
-            margin-top: 4px;
-        }
-
         .reset-btn {
             display: block;
             width: 100%;
             padding: 15px;
             margin-top: 30px;
             background: #fff;
-            color: #ff6b6b;
-            border: 1px solid #ff6b6b;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
             border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
@@ -115,8 +108,8 @@
 <body>
 
 <div class="container">
-    <h1>✈️ 日本滑雪出征清單</h1>
-    <p class="subtitle">Tokyo & Echigo-Yuzawa</p>
+    <h1>🌍 旅行準備清單</h1>
+    <p class="subtitle">通用模組版 (適用各式旅遊)</p>
 
     <div class="progress-wrapper">
         <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
@@ -124,70 +117,26 @@
     </div>
 
     <div id="checklist">
-        <div class="category" style="color: var(--daily-color);">👜 出國日常必備</div>
-        <label class="item">
-            <input type="checkbox" id="d_passport">
-            <div class="item-content">
-                <span class="item-title">核心證件</span>
-                <span class="item-desc">護照正本、小黃卡影本、保險英文證明</span>
-            </div>
-        </label>
-        <label class="item">
-            <input type="checkbox" id="d_money">
-            <div class="item-content">
-                <span class="item-title">錢財票卡</span>
-                <span class="item-desc">日幣現金、海外高回饋信用卡、實體 Suica</span>
-            </div>
-        </label>
-        <label class="item">
-            <input type="checkbox" id="d_electronics">
-            <div class="item-content">
-                <span class="item-title">電力與網路</span>
-                <span class="item-desc">行動電源、網卡/eSIM、多口充電頭、線材</span>
-            </div>
-        </label>
-        <label class="item">
-            <input type="checkbox" id="d_hygiene">
-            <div class="item-content">
-                <span class="item-title">個人護理</span>
-                <span class="item-desc">常備藥(止痛/感冒)、口罩、牙膏牙刷、刮鬍刀</span>
-            </div>
-        </label>
+        <div class="category" style="color: var(--daily-color);">🪪 核心證件與財務</div>
+        <label class="item"><input type="checkbox" id="g_passport"><div class="item-content"><span class="item-title">護照與簽證</span><span class="item-desc">確認效期 6 個月以上、電子簽或紙本</span></div></label>
+        <label class="item"><input type="checkbox" id="g_money"><div class="item-content"><span class="item-title">外幣現金與信用卡</span><span class="item-desc">備用信用卡、當地小額現金</span></div></label>
+        <label class="item"><input type="checkbox" id="g_insurance"><div class="item-content"><span class="item-title">旅遊保險證明</span><span class="item-desc">包含海外醫療、特殊運動保障</span></div></label>
 
-        <div class="category" style="color: var(--transport-color);">🚄 交通票券確認</div>
-        <label class="item"><input type="checkbox" id="t_skyliner"><div class="item-content"><span>Skyliner 預約車票</span><span class="item-desc">機場至市區快速連線</span></div></label>
-        <label class="item"><input type="checkbox" id="t_shinkansen"><div class="item-content"><span>新幹線 / JR Pass</span><span class="item-desc">東京至越後湯澤指定席</span></div></label>
-        <label class="item"><input type="checkbox" id="t_vjw"><div class="item-content"><span>Visit Japan Web QR</span><span class="item-desc">入境與海關截圖</span></div></label>
+        <div class="category" style="color: var(--transport-color);">🚄 交通與行程預定</div>
+        <label class="item"><input type="checkbox" id="g_airport"><div class="item-content"><span class="item-title">機場往返交通</span><span class="item-desc">Skyliner/接駁車/機場快線等</span></div></label>
+        <label class="item"><input type="checkbox" id="g_longdist"><div class="item-content"><span class="item-title">跨城市交通票券</span><span class="item-desc">新幹線/高鐵/租車預訂</span></div></label>
+        <label class="item"><input type="checkbox" id="g_web_entry"><div class="item-content"><span class="item-title">各國入境申報</span><span class="item-desc">如 Visit Japan Web / K-ETA / SG Arrival 等</span></div></label>
 
-        <div class="category" style="color: var(--ticket-color);">🎟️ 湯澤雪場預訂</div>
-        <label class="item">
-            <input type="checkbox" id="tk_iwa">
-            <div class="item-content">
-                <span>岩原 (Iwappara) </span>
-                <a href="https://iwanappara.com/" target="_blank" class="link-tag">🌐 適合新手的超寬平原</a>
-            </div>
-        </label>
-        <label class="item">
-            <input type="checkbox" id="tk_kan">
-            <div class="item-content">
-                <span>神立 (Kandatsu) </span>
-                <a href="https://www.kandatsu.com/" target="_blank" class="link-tag">🌐 帥哥美女最多的 Park 聖地</a>
-            </div>
-        </label>
-        <label class="item">
-            <input type="checkbox" id="tk_kag">
-            <div class="item-content">
-                <span>神樂 (Kagura) </span>
-                <a href="https://www.princehotels.co.jp/ski/kagura/" target="_blank" class="link-tag">🌐 雪質保證，風景絕美</a>
-            </div>
-        </label>
+        <div class="category" style="color: var(--primary-color);">📱 電子設備與個人品</div>
+        <label class="item"><input type="checkbox" id="g_net"><div class="item-content"><span class="item-title">網路連線方式</span><span class="item-desc">SIM卡 / eSIM / 分享器</span></div></label>
+        <label class="item"><input type="checkbox" id="g_power"><div class="item-content"><span class="item-title">電力組</span><span class="item-desc">行動電源、轉接頭、各類充電線</span></div></label>
+        <label class="item"><input type="checkbox" id="g_med"><div class="item-content"><span class="item-title">個人常備藥與清潔</span><span class="item-desc">感冒藥、止痛藥、保養品、牙刷組</span></div></label>
 
-        <div class="category" style="color: var(--ski-color);">🎿 滑雪必帶裝備</div>
-        <label class="item"><input type="checkbox" id="s_h_g"><div class="item-content"><span>安全帽 & 雪鏡</span><span class="item-desc">雪鏡記得檢查海綿有無氧化</span></div></label>
-        <label class="item"><input type="checkbox" id="s_clothes"><div class="item-content"><span>雪衣雪褲 & 手套</span><span class="item-desc">手套建議兩雙替換，防寒要夠</span></div></label>
-        <label class="item"><input type="checkbox" id="s_inner"><div class="item-content"><span>發熱排汗層 & 滑雪長襪</span><span class="item-desc">襪子要過小腿高度，防摩擦</span></div></label>
-        <label class="item"><input type="checkbox" id="s_protect"><div class="item-content"><span>護具 (防摔褲/護膝)</span><span class="item-desc">特別是新手，護墊是保命符</span></div></label>
-        <label class="item"><input type="checkbox" id="s_skin"><div class="item-content"><span>雪地強效防曬 & 護唇膏</span><span class="item-desc">雪地反射強，不想曬傷必帶</span></div></label>
+        <div class="category" style="color: var(--ski-color);">🎿 滑雪/極限運動專區</div>
+        <label class="item"><input type="checkbox" id="s_safety"><div class="item-content"><span class="item-title">安全護具</span><span class="item-desc">安全帽、雪鏡、護膝、護具</span></div></label>
+        <label class="item"><input type="checkbox" id="s_outer"><div class="item-content"><span class="item-title">外層功能衣物</span><span class="item-desc">防水雪衣雪褲、防水防寒手套</span></div></label>
+        <label class="item"><input type="checkbox" id="s_ticket"><div class="item-content"><span class="item-title">活動票券</span><span class="item-desc">雪票預約、課程預約、器材租借確認</span></div></label>
+        <label class="item"><input type="checkbox" id="s_skin"><div class="item-content"><span class="item-title">特殊護理</span><span class="item-desc">高強效防曬、厚長襪、圍脖/面罩</span></div></label>
     </div>
 
     <button class="reset-btn" onclick="resetList()">清除所有勾選</button>
