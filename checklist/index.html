@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的出國準備清單</title>
+    <title>越後湯澤滑雪清單 ❄️</title>
     <style>
-        /* --- 樣式設計 (CSS) --- */
         :root {
-            --primary-color: #4a90e2;
-            --bg-color: #f4f7f6;
+            --primary-color: #3498db;
+            --ski-color: #2c3e50;
+            --ticket-color: #27ae60;
+            --transport-color: #e67e22;
+            --bg-color: #f8f9fa;
             --card-bg: #ffffff;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             margin: 0;
             padding: 20px;
@@ -21,75 +23,74 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
 
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
+        h1 { text-align: center; color: var(--ski-color); margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 20px; }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 30px;
+        .progress-wrapper {
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            padding: 10px 0;
+            z-index: 10;
         }
-
-        /* 進度條 */
         .progress-container {
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            height: 10px;
-            margin-bottom: 20px;
+            background-color: #eee;
+            border-radius: 20px;
+            height: 12px;
             overflow: hidden;
         }
-        
         .progress-bar {
-            background-color: var(--primary-color);
+            background: linear-gradient(90deg, #3498db, #2ecc71);
             height: 100%;
-            width: 0%; /* JS 會動態控制這裡 */
-            transition: width 0.3s ease;
+            width: 0%;
+            transition: width 0.4s ease;
         }
 
         .category {
-            margin-top: 20px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            margin: 25px 0 10px 0;
+            padding: 5px 12px;
+            background: #f1f3f5;
+            border-radius: 8px;
             font-weight: bold;
-            color: var(--primary-color);
+            color: var(--ski-color);
         }
 
         .item {
             display: flex;
-            align-items: center;
-            padding: 12px 10px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s;
+            align-items: flex-start;
+            padding: 14px 10px;
+            border-bottom: 1px solid #f1f1f1;
             cursor: pointer;
         }
 
-        .item:hover {
-            background-color: #f9f9f9;
-        }
-
-        /* 隱藏原生 checkbox，用自定義的比較好看 */
         input[type="checkbox"] {
-            transform: scale(1.5);
+            width: 20px;
+            height: 20px;
             margin-right: 15px;
-            cursor: pointer;
+            margin-top: 2px;
         }
 
-        /* 勾選後的文字樣式 */
-        input[type="checkbox"]:checked + span {
+        input[type="checkbox"]:checked + .item-content span {
             text-decoration: line-through;
-            color: #aaa;
+            color: #bbb;
+        }
+
+        .item-content { display: flex; flex-direction: column; }
+        .item-desc { font-size: 0.75em; color: #666; margin-top: 4px; }
+
+        .link-tag {
+            font-size: 0.7em;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-top: 4px;
         }
 
         .reset-btn {
@@ -97,61 +98,76 @@
             width: 100%;
             padding: 15px;
             margin-top: 30px;
-            background-color: #ff6b6b;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
+            background: #fff;
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+            border-radius: 12px;
             cursor: pointer;
-        }
-
-        .reset-btn:hover {
-            background-color: #ff5252;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>✈️ 出國必備清單</h1>
-    <p class="subtitle">自動儲存進度，關掉網頁也不會不見！</p>
+    <h1>❄️ 越後湯澤滑雪清單</h1>
+    <p class="subtitle">岩原．神立．神樂攻略</p>
 
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
+    <div class="progress-wrapper">
+        <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+        <p style="text-align: center; font-size: 0.85em; margin: 8px 0;" id="progressText">載入中...</p>
     </div>
-    <p style="text-align: center; font-size: 0.8em;" id="progressText">0% 完成</p>
 
     <div id="checklist">
-        <div class="category">🪪 證件與錢財</div>
-        <label class="item"><input type="checkbox" id="passport"><span>護照 (效期六個月以上)</span></label>
-        <label class="item"><input type="checkbox" id="visa"><span>簽證 / 入境 QR Code</span></label>
-        <label class="item"><input type="checkbox" id="cash"><span>外幣現金</span></label>
-        <label class="item"><input type="checkbox" id="creditcard"><span>信用卡 (確認海外回饋)</span></label>
+        <div class="category" style="color: var(--ticket-color);">🎟️ 雪票與預約</div>
+        
+        <label class="item">
+            <input type="checkbox" id="tk_iwanappara">
+            <div class="item-content">
+                <span>岩原 (Iwappara) 雪票</span>
+                <span class="item-desc">適合新手、超寬廣平坦坡道</span>
+                <a href="https://iwanappara.com/" target="_blank" class="link-tag">🌐 官網連結</a>
+            </div>
+        </label>
 
-        <div class="category">📱 電子產品</div>
-        <label class="item"><input type="checkbox" id="sim"><span>網卡 / eSim 設定</span></label>
-        <label class="item"><input type="checkbox" id="powerbank"><span>行動電源 (放隨身行李)</span></label>
-        <label class="item"><input type="checkbox" id="adapter"><span>萬用轉接頭</span></label>
-        <label class="item"><input type="checkbox" id="charger"><span>充電線 x 2</span></label>
+        <label class="item">
+            <input type="checkbox" id="tk_kandatsu">
+            <div class="item-content">
+                <span>神立 (Kandatsu) 雪票</span>
+                <span class="item-desc">適合年輕人、公園(Park)設施多、有夜滑</span>
+                <a href="https://www.kandatsu.com/" target="_blank" class="link-tag">🌐 官網連結</a>
+            </div>
+        </label>
 
-        <div class="category">👕 衣物與生活</div>
-        <label class="item"><input type="checkbox" id="clothes"><span>換洗衣物 (洋蔥式穿法)</span></label>
-        <label class="item"><input type="checkbox" id="pajamas"><span>睡衣</span></label>
-        <label class="item"><input type="checkbox" id="medicine"><span>常備藥品 (感冒/腸胃/止痛)</span></label>
-        <label class="item"><input type="checkbox" id="mask"><span>備用口罩</span></label>
+        <label class="item">
+            <input type="checkbox" id="tk_kagura">
+            <div class="item-content">
+                <span>神樂 (Kagura) 雪票</span>
+                <span class="item-desc">海拔高雪質好、春天也能滑、纜車超長</span>
+                <a href="https://www.princehotels.co.jp/ski/kagura/" target="_blank" class="link-tag">🌐 官網連結</a>
+            </div>
+        </label>
+
+        <div class="category" style="color: var(--transport-color);">🚄 交通票券</div>
+        <label class="item"><input type="checkbox" id="t_skyliner"><span>Skyliner 預約</span></label>
+        <label class="item"><input type="checkbox" id="t_shinkansen"><span>新幹線 / JR Pass 劃位</span></label>
+        <label class="item"><input type="checkbox" id="t_shuttle"><span>確認雪場接駁車時間</span></label>
+
+        <div class="category">🎿 滑雪裝備</div>
+        <label class="item"><input type="checkbox" id="s_h"><span>安全帽 / 雪鏡</span></label>
+        <label class="item"><input type="checkbox" id="s_c"><span>雪衣 / 雪褲 / 內搭</span></label>
+        <label class="item"><input type="checkbox" id="s_p"><span>護具 (防摔褲/護膝/護肘)</span></label>
+        <label class="item"><input type="checkbox" id="s_s"><span>滑雪長襪 / 防水手套</span></label>
     </div>
 
-    <button class="reset-btn" onclick="resetList()">❌ 清除所有勾選 (重新整理)</button>
+    <button class="reset-btn" onclick="resetList()">清除所有勾選</button>
 </div>
 
 <script>
-    // --- 程式邏輯 (JavaScript) ---
-
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     const progressBar = document.getElementById('progressBar');
     const progressText = document.getElementById('progressText');
 
-    // 1. 網頁載入時，從 LocalStorage 讀取紀錄
     function loadState() {
         checkboxes.forEach(box => {
             const isChecked = localStorage.getItem(box.id) === 'true';
@@ -160,31 +176,23 @@
         updateProgress();
     }
 
-    // 2. 當使用者勾選時，儲存狀態並更新進度
     checkboxes.forEach(box => {
-        box.addEventListener('change', () => {
-            localStorage.setItem(box.id, box.checked); // 儲存 true/false
+        box.addEventListener('change', (e) => {
+            localStorage.setItem(box.id, box.checked);
             updateProgress();
         });
     });
 
-    // 3. 更新進度條的功能
     function updateProgress() {
         const total = checkboxes.length;
         const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
         const percent = Math.round((checked / total) * 100);
-
         progressBar.style.width = percent + '%';
         progressText.innerText = `${percent}% 完成 (${checked}/${total})`;
-        
-        if(percent === 100) {
-            progressText.innerText = "🎉 太棒了！準備出發！";
-        }
     }
 
-    // 4. 清除重置按鈕
     function resetList() {
-        if(confirm("確定要清除所有勾選狀態嗎？")) {
+        if(confirm("確定要重置嗎？")) {
             checkboxes.forEach(box => {
                 box.checked = false;
                 localStorage.removeItem(box.id);
@@ -192,8 +200,6 @@
             updateProgress();
         }
     }
-
-    // 啟動！
     loadState();
 </script>
 
