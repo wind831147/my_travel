@@ -243,13 +243,8 @@
             <p id="progressText">0%</p>
         </div>
 
-        <div class="tabs" id="mainTabs">
-            <div class="tab active" onclick="switchTab('checklist')">準備清單</div>
-            <div class="tab" onclick="switchTab('itinerary')">行程表</div>
-        </div>
-
-        <div id="checklistRenderRoot"></div>
-        <div id="itineraryRenderRoot" class="timeline-container"></div>
+        <div id="checklistRenderRoot" style="display:none;"></div>
+        <div id="itineraryRenderRoot" class="timeline-container" style="display:block;"></div>
 
         <div id="tripNotesSection" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
             <h3>📝 旅行筆記</h3>
@@ -306,9 +301,8 @@
                     }
 
                     // 3. 讀取 Template
-                    const templateResponse = await fetch(`../data/templates/${trip.template}`);
+                    const templateResponse = await fetch(`../data/itineraries/${trip.itinerary}`);
                     config = await templateResponse.json();
-
                     // 覆蓋標題為行程標題
                     config.subtitle = config.title;
                     config.title = trip.title;
@@ -316,21 +310,26 @@
                     // Load Itinerary if exists
                     if (trip.itinerary) {
                         loadItinerary(trip.itinerary);
+                        document.getElementById('itineraryRenderRoot').style.display = 'block';
                     } else {
-                        document.getElementById('mainTabs').style.display = 'none'; // Hide tabs if no itinerary
+                        document.getElementById('itineraryRenderRoot').innerHTML = '<p style="text-align:center; padding:20px; color:#666;">此旅程尚未規劃行程表</p>';
+                        document.getElementById('itineraryRenderRoot').style.display = 'block';
                     }
+
+                    // Hide Tabs (Feature Removed)
+                    const tabs = document.getElementById('mainTabs');
+                    if (tabs) tabs.style.display = 'none';
+
+                    // Ensure Notes and Status are visible
+                    document.getElementById('tripNotesSection').style.display = 'block';
+                    document.getElementById('statusBtn').parentElement.style.display = 'flex';
                 }
 
-                // --- 新增排序邏輯 ---
-                if (config.categories) {
-                    config.categories.sort((a, b) => {
-                        const sortA = a.sort !== undefined ? a.sort : 999;
-                        const sortB = b.sort !== undefined ? b.sort : 999;
-                        return sortA - sortB;
-                    });
-                }
+                // Checklist rendering removed as per user request
+                // renderChecklist(config); 
+                document.getElementById('mainTitle').innerText = config.title;
+                document.getElementById('subTitle').innerText = config.subtitle;
 
-                renderChecklist(config);
             } catch (error) {
                 console.error("無法讀取設定檔:", error);
                 document.getElementById('mainTitle').innerText = "載入失敗";
@@ -371,30 +370,9 @@
             }
         }
 
-        function switchTab(tabName) {
-            const checklistRoot = document.getElementById('checklistRenderRoot');
-            const itineraryRoot = document.getElementById('itineraryRenderRoot');
-            const tabs = document.querySelectorAll('.tab');
+        // switchTab function removed as tabs are gone
 
-            tabs.forEach(t => t.classList.remove('active'));
-
-            if (tabName === 'checklist') {
-                checklistRoot.style.display = 'block';
-                itineraryRoot.style.display = 'none';
-                tabs[0].classList.add('active');
-                // Show notes and buttons
-                document.getElementById('tripNotesSection').style.display = 'block';
-                document.getElementById('statusBtn').parentElement.style.display = 'flex';
-            } else {
-                checklistRoot.style.display = 'none';
-                itineraryRoot.style.display = 'block';
-                tabs[1].classList.add('active');
-                // Hide notes and buttons in itinerary view
-                document.getElementById('tripNotesSection').style.display = 'none';
-                document.getElementById('statusBtn').parentElement.style.display = 'none';
-            }
-        }
-
+        // renderChecklist function removed/unused
         function renderChecklist(config) {
             document.getElementById('mainTitle').innerText = config.title;
             document.getElementById('subTitle').innerText = config.subtitle;
