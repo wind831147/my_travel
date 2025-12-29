@@ -41,8 +41,15 @@
                 "time": "14:56",
                 "type": "arrival",
                 "title": "抵達越後湯澤",
-                "desc": "前往飯店 check-in",
+                "desc": "前往租借雪具＆飯店 check-in",
                 "icon": "❄️"
+            },
+            {
+                "time": "16:30",
+                "type": "activity",
+                "title": "滑雪 kickoff",
+                "desc": "岩原夜滑",
+                "icon": "🎿"
             }
         ]
     },
@@ -50,10 +57,10 @@
         "date": "2026-01-15 (四)",
         "events": [
             {
-                "time": "09:00",
+                "time": "08:30",
                 "type": "activity",
-                "title": "滑雪行程 Day 1",
-                "desc": "GALA / 湯澤高原 / 石打丸山",
+                "title": "滑雪 Day 1",
+                "desc": "神樂雪場",
                 "icon": "🎿"
             }
         ]
@@ -62,10 +69,10 @@
         "date": "2026-01-16 (五)",
         "events": [
             {
-                "time": "09:00",
+                "time": "08:30",
                 "type": "activity",
-                "title": "滑雪行程 Day 2",
-                "desc": "享受粉雪！",
+                "title": "滑雪 Day 2",
+                "desc": "神樂雪場",
                 "icon": "🎿"
             }
         ]
@@ -75,16 +82,23 @@
         "events": [
             {
                 "time": "09:00",
-                "type": "activity",
-                "title": "滑雪行程 Day 3 (半天)",
-                "desc": "最後衝刺",
+                "type": "checkout",
+                "title": "退房",
+                "desc": "行李帶去神立雪場寄放",
                 "icon": "🎿"
             },
             {
-                "time": "16:00",
-                "type": "checkout",
-                "title": "整理行李 & 退房",
-                "desc": "前往車站",
+                "time": "09:30",
+                "type": "activity",
+                "title": "滑雪 Day 3",
+                "desc": "神立雪場",
+                "icon": "🎿"
+            },
+            {
+                "time": "17:30",
+                "type": "off",
+                "title": "滑雪行程結束",
+                "desc": "前往車站還雪具",
                 "icon": "🏨"
             },
             {
