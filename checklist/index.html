@@ -236,7 +236,7 @@
             <h1 id="mainTitle">Loading...</h1>
             <p id="subTitle"></p>
         </div>
-        <div class="sticky-progress">
+        <div class="sticky-progress" id="stickyProgress">
             <div class="progress-bar-bg">
                 <div class="progress-bar-fill" id="progressBar"></div>
             </div>
@@ -282,7 +282,11 @@
                     // Universal Mode UI Adjustments
                     document.getElementById('tripNotesSection').style.display = 'none';
                     document.getElementById('statusBtn').style.display = 'none';
-                    document.getElementById('mainTabs').style.display = 'none';
+
+                    // Show Progress Bar for Checklist
+                    document.getElementById('stickyProgress').style.display = 'block';
+                    document.getElementById('checklistRenderRoot').style.display = 'block';
+                    document.getElementById('itineraryRenderRoot').style.display = 'none';
                 } else {
                     if (!tripId) {
                         alert("未指定行程 ID");
@@ -290,6 +294,9 @@
                         return;
                     }
                     currentTripId = tripId;
+
+                    // Hide Progress Bar for Itinerary View
+                    document.getElementById('stickyProgress').style.display = 'none';
 
                     // 2. 讀取行程總表，找出對應的 template
                     const tripsResponse = await fetch('../data/trips.json');
