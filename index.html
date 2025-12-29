@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的旅行紀錄</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
+            font-weight: 600;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img {
+            height: 160px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-date {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+
+        .card-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-planning {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>✈️ 我的旅行紀錄</h1>
+
+        <div class="section-title">即將出發</div>
+        <div class="grid" id="upcomingGrid">
+            <!-- JS will populate -->
+        </div>
+
+        <div class="section-title">精彩回憶</div>
+        <div class="grid" id="pastGrid">
+            <!-- JS will populate -->
+        </div>
+    </div>
+
+    <div class="fab" onclick="showAddTripHelp()">+</div>
+
+    <script>
+        function showAddTripHelp() {
+            alert("💡 如何新增旅行？\n\n由於這是靜態網站，請手動編輯 `data/trips.json` 檔案來新增行程。\n\n格式範例：\n{\n  \"id\": \"new_trip\",\n  \"title\": \"新旅程\",\n  \"date\": \"2025-12-31\",\n  \"template\": \"general.json\",\n  \"status\": \"planning\"\n}");
+        }
+
+        async function loadTrips() {
+            try {
+                const response = await fetch('data/trips.json');
+                const trips = await response.json();
+
+                const upcomingContainer = document.getElementById('upcomingGrid');
+                const pastContainer = document.getElementById('pastGrid');
+
+                // Sort by date desc
+                trips.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                trips.forEach(trip => {
+                    // Check local storage for status override
+                    const localStatus = localStorage.getItem(`trip_status_${trip.id}`);
+                    const finalStatus = localStatus || trip.status;
+
+                    const isPast = finalStatus === 'completed';
+                    const card = createCard(trip, finalStatus);
+                    if (isPast) {
+                        pastContainer.appendChild(card);
+                    } else {
+                        upcomingContainer.appendChild(card);
+                    }
+                });
+
+                if (upcomingContainer.children.length === 0) {
+                    upcomingContainer.innerHTML = '<p style="color:#999; padding:20px;">目前沒有計劃中的旅行</p>';
+                }
+            } catch (e) {
+                console.error(e);
+                alert('無法讀取行程資料');
+            }
+        }
+
+        function createCard(trip, status) {
+            const a = document.createElement('a');
+            a.className = 'card';
+            a.href = `checklist/index.html?tripId=${trip.id}`;
+
+            const statusText = status === 'planning' ? '規劃中' : '已完成';
+            const statusClass = status === 'planning' ? 'status-planning' : 'status-completed';
+
+            a.innerHTML = `
+            <div class="card-img" style="background-image: url('${trip.cover || ''}')"></div>
+            <div class="card-body">
+                <div class="card-date">${trip.date}</div>
+                <h3 class="card-title">${trip.title}</h3>
+                <span class="card-status ${statusClass}">${statusText}</span>
+            </div>
+        `;
+            return a;
+        }
+
+        loadTrips();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+[
+    {
+        "id": "2025_hokkaido",
+        "title": "2025 北海道滑雪之旅",
+        "date": "2025-01-15",
+        "template": "ski.json",
+        "status": "planning",
+        "cover": "https://images.unsplash.com/photo-1551009175-8a68da93d5f9?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+        "id": "2024_tokyo",
+        "title": "2024 東京賞櫻",
+        "date": "2024-04-01",
+        "template": "general.json",
+        "status": "completed",
+        "cover": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80"
+    }
+]
