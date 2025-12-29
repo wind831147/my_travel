@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,11 +27,19 @@
             background: var(--card-bg);
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 1.5em; color: var(--primary-color); }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5em;
+            color: var(--primary-color);
+        }
 
         /* 置頂進度條 */
         .sticky-progress {
@@ -41,12 +50,14 @@
             z-index: 10;
             border-bottom: 1px solid #eee;
         }
+
         .progress-bar-bg {
             background-color: #eee;
             border-radius: 10px;
             height: 10px;
             overflow: hidden;
         }
+
         .progress-bar-fill {
             background: linear-gradient(90deg, #3498db, #2ecc71);
             height: 100%;
@@ -74,17 +85,30 @@
             border-bottom: 1px solid #f1f1f1;
             cursor: pointer;
         }
+
         .item-row input {
             width: 18px;
             height: 18px;
             margin-right: 12px;
             margin-top: 3px;
         }
-        .item-content { flex: 1; }
-        .item-label { font-size: 1em; display: block; }
-        .item-desc { font-size: 0.8em; color: #777; margin-top: 2px; }
 
-        input:checked + .item-content .item-label {
+        .item-content {
+            flex: 1;
+        }
+
+        .item-label {
+            font-size: 1em;
+            display: block;
+        }
+
+        .item-desc {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        input:checked+.item-content .item-label {
             text-decoration: line-through;
             color: #bbb;
         }
@@ -103,106 +127,203 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1 id="mainTitle">Loading...</h1>
-        <p id="subTitle"></p>
-    </div>
-    <div class="sticky-progress">
-        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
-        <p id="progressText">0%</p>
-    </div>
-    <div id="checklistRenderRoot"></div>
-    <button class="reset-btn" onclick="resetChecklist()">重置所有勾選</button>
-</div>
+    <div class="container">
+        <a href="../index.html" style="display:inline-block; margin-bottom:10px; text-decoration:none; color:#666;">←
+            回首頁</a>
+        <div class="header">
+            <h1 id="mainTitle">Loading...</h1>
+            <p id="subTitle"></p>
+        </div>
+        <div class="sticky-progress">
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+            <p id="progressText">0%</p>
+        </div>
+        <div id="checklistRenderRoot"></div>
 
-<script>
-    // 核心邏輯：從外部檔案讀取資料
-    async function init() {
-        try {
-            // 讀取同目錄下的 config.json
-            const response = await fetch('./config.json');
-            const config = await response.json();
+        <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+            <h3>📝 旅行筆記</h3>
+            <textarea id="tripNotes"
+                style="width: 100%; height: 150px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;"
+                placeholder="記錄旅途中的點點滴滴..."></textarea>
+        </div>
 
-            // --- 新增排序邏輯 ---
-            if (config.categories) {
-                config.categories.sort((a, b) => {
-                    // 如果沒有定義 sort，預設放最後面 (999)
-                    const sortA = a.sort !== undefined ? a.sort : 999;
-                    const sortB = b.sort !== undefined ? b.sort : 999;
-                    return sortA - sortB;
-                });
+        <div style="display: flex; gap: 10px; margin-top: 30px;">
+            <button class="reset-btn" onclick="resetChecklist()"
+                style="margin-top: 0; flex: 1; background: #fff; color: #e74c3c; border: 1px solid #e74c3c;">重置勾選</button>
+            <button class="reset-btn" onclick="toggleTripStatus()" id="statusBtn"
+                style="margin-top: 0; flex: 1; background: #2ecc71; color: white; border: 1px solid #2ecc71;">完成旅行</button>
+        </div>
+    </div>
+
+    <script>
+        let currentTripId = null;
+
+        // 核心邏輯：從外部檔案讀取資料
+        async function init() {
+            try {
+                // 1. 解析 URL 參數
+                const urlParams = new URLSearchParams(window.location.search);
+                const tripId = urlParams.get('tripId');
+
+                if (!tripId) {
+                    alert("未指定行程 ID");
+                    window.location.href = '../index.html';
+                    return;
+                }
+                currentTripId = tripId;
+
+                // 2. 讀取行程總表，找出對應的 template
+                const tripsResponse = await fetch('../data/trips.json');
+                const trips = await tripsResponse.json();
+                const trip = trips.find(t => t.id === tripId);
+
+                if (!trip) {
+                    throw new Error("找不到此行程");
+                }
+
+                // 3. 讀取 Template
+                const templateResponse = await fetch(`../data/templates/${trip.template}`);
+                const config = await templateResponse.json();
+
+                // 覆蓋標題為行程標題 (可選，或保留 template 標題)
+                // 這裡我們選擇顯示行程標題，副標題顯示 template 標題
+                config.subtitle = config.title;
+                config.title = trip.title;
+
+                // --- 新增排序邏輯 ---
+                if (config.categories) {
+                    config.categories.sort((a, b) => {
+                        const sortA = a.sort !== undefined ? a.sort : 999;
+                        const sortB = b.sort !== undefined ? b.sort : 999;
+                        return sortA - sortB;
+                    });
+                }
+
+                renderChecklist(config);
+            } catch (error) {
+                console.error("無法讀取設定檔:", error);
+                document.getElementById('mainTitle').innerText = "載入失敗";
+                document.getElementById('subTitle').innerText = error.message;
             }
-            
-            renderChecklist(config);
-        } catch (error) {
-            console.error("無法讀取設定檔:", error);
-            document.getElementById('mainTitle').innerText = "載入失敗，請檢查 config.json";
         }
-    }
 
-    function renderChecklist(config) {
-        document.getElementById('mainTitle').innerText = config.title;
-        document.getElementById('subTitle').innerText = config.subtitle;
-        
-        const root = document.getElementById('checklistRenderRoot');
-        root.innerHTML = '';
+        function renderChecklist(config) {
+            document.getElementById('mainTitle').innerText = config.title;
+            document.getElementById('subTitle').innerText = config.subtitle;
 
-        config.categories.forEach(cat => {
-            const catDiv = document.createElement('div');
-            catDiv.innerHTML = `<div class="category-title">${cat.name}</div>`;
-            
-            cat.items.forEach(item => {
-                const itemRow = document.createElement('label');
-                itemRow.className = 'item-row';
-                itemRow.innerHTML = `
+            const root = document.getElementById('checklistRenderRoot');
+            root.innerHTML = '';
+
+            config.categories.forEach(cat => {
+                const catDiv = document.createElement('div');
+                catDiv.innerHTML = `<div class="category-title">${cat.name}</div>`;
+
+                cat.items.forEach(item => {
+                    const itemRow = document.createElement('label');
+                    itemRow.className = 'item-row';
+                    itemRow.innerHTML = `
                     <input type="checkbox" id="${item.id}" onchange="updateState('${item.id}', this.checked)">
                     <div class="item-content">
                         <span class="item-label">${item.label}</span>
                         ${item.desc ? `<span class="item-desc">${item.desc}</span>` : ''}
                     </div>
                 `;
-                catDiv.appendChild(itemRow);
+                    catDiv.appendChild(itemRow);
+                });
+                root.appendChild(catDiv);
             });
-            root.appendChild(catDiv);
-        });
-        loadSavedState();
-    }
 
-    // 儲存、讀取與進度計算邏輯保持不變...
-    function updateState(id, isChecked) {
-        localStorage.setItem('trip_chk_' + id, isChecked);
-        calculateProgress();
-    }
-
-    function loadSavedState() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(box => {
-            const saved = localStorage.getItem('trip_chk_' + box.id);
-            if (saved === 'true') box.checked = true;
-        });
-        calculateProgress();
-    }
-
-    function calculateProgress() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        const total = checkboxes.length;
-        const checked = Array.from(checkboxes).filter(b => b.checked).length;
-        const percent = total === 0 ? 0 : Math.round((checked / total) * 100);
-        document.getElementById('progressBar').style.width = percent + '%';
-        document.getElementById('progressText').innerText = `${percent}% 完成 (${checked}/${total})`;
-    }
-
-    function resetChecklist() {
-        if(confirm("確定要重置嗎？")) {
-            localStorage.clear(); // 簡化處理
-            location.reload();
+            loadSavedState();
+            loadNotes();
+            updateStatusUI();
         }
-    }
 
-    init(); // 啟動
-</script>
+        function getStorageKey(itemId) {
+            return `trip_${currentTripId}_chk_${itemId}`;
+        }
+
+        function updateState(id, isChecked) {
+            localStorage.setItem(getStorageKey(id), isChecked);
+            calculateProgress();
+        }
+
+        function loadSavedState() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(box => {
+                const saved = localStorage.getItem(getStorageKey(box.id));
+                if (saved === 'true') box.checked = true;
+            });
+            calculateProgress();
+        }
+
+        // --- Notes Logic ---
+        const notesArea = document.getElementById('tripNotes');
+        notesArea.addEventListener('input', (e) => {
+            localStorage.setItem(`trip_${currentTripId}_notes`, e.target.value);
+        });
+
+        function loadNotes() {
+            const savedNotes = localStorage.getItem(`trip_${currentTripId}_notes`);
+            if (savedNotes) {
+                notesArea.value = savedNotes;
+            }
+        }
+
+        // --- Status Logic ---
+        function toggleTripStatus() {
+            const currentStatus = localStorage.getItem(`trip_status_${currentTripId}`);
+            const newStatus = currentStatus === 'completed' ? 'planning' : 'completed';
+
+            if (newStatus === 'completed') {
+                if (!confirm("確定要將此旅行標記為「已完成」嗎？\n這將會把它移至「精彩回憶」區。")) return;
+            }
+
+            localStorage.setItem(`trip_status_${currentTripId}`, newStatus);
+            updateStatusUI();
+            alert(newStatus === 'completed' ? "旅行已完成！" : "旅行已恢復為規劃中。");
+        }
+
+        function updateStatusUI() {
+            const status = localStorage.getItem(`trip_status_${currentTripId}`);
+            const btn = document.getElementById('statusBtn');
+            if (status === 'completed') {
+                btn.innerText = "恢復為規劃中";
+                btn.style.background = "#95a5a6";
+                btn.style.borderColor = "#95a5a6";
+            } else {
+                btn.innerText = "完成旅行";
+                btn.style.background = "#2ecc71";
+                btn.style.borderColor = "#2ecc71";
+            }
+        }
+
+        function calculateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const total = checkboxes.length;
+            const checked = Array.from(checkboxes).filter(b => b.checked).length;
+            const percent = total === 0 ? 0 : Math.round((checked / total) * 100);
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').innerText = `${percent}% 完成 (${checked}/${total})`;
+        }
+
+        function resetChecklist() {
+            if (confirm("確定要重置此行程的所有勾選嗎？")) {
+                // 僅清除此行程的 key
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(box => {
+                    localStorage.removeItem(getStorageKey(box.id));
+                });
+                location.reload();
+            }
+        }
+
+        init(); // 啟動
+    </script>
 </body>
+
 </html>
