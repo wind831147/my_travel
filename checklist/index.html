@@ -287,6 +287,17 @@
                     document.getElementById('stickyProgress').style.display = 'block';
                     document.getElementById('checklistRenderRoot').style.display = 'block';
                     document.getElementById('itineraryRenderRoot').style.display = 'none';
+
+                    // Sort and Render Checklist
+                    if (config.categories) {
+                        config.categories.sort((a, b) => {
+                            const sortA = a.sort !== undefined ? a.sort : 999;
+                            const sortB = b.sort !== undefined ? b.sort : 999;
+                            return sortA - sortB;
+                        });
+                    }
+                    renderChecklist(config);
+
                 } else {
                     if (!tripId) {
                         alert("未指定行程 ID");
@@ -297,8 +308,9 @@
 
                     // Hide Progress Bar for Itinerary View
                     document.getElementById('stickyProgress').style.display = 'none';
+                    document.getElementById('checklistRenderRoot').style.display = 'none';
 
-                    // 2. 讀取行程總表，找出對應的 template
+                    // 2. 讀取行程總表
                     const tripsResponse = await fetch('../data/trips.json');
                     const trips = await tripsResponse.json();
                     const trip = trips.find(t => t.id === tripId);
@@ -307,12 +319,9 @@
                         throw new Error("找不到此行程");
                     }
 
-                    // 3. 讀取 Template
-                    const templateResponse = await fetch(`../data/itineraries/${trip.itinerary}`);
-                    config = await templateResponse.json();
-                    // 覆蓋標題為行程標題
-                    config.subtitle = config.title;
-                    config.title = trip.title;
+                    // Set Title from Trip Data directly
+                    document.getElementById('mainTitle').innerText = trip.title;
+                    document.getElementById('subTitle').innerText = trip.title; // Or empty if preferred
 
                     // Load Itinerary if exists
                     if (trip.itinerary) {
@@ -331,11 +340,6 @@
                     document.getElementById('tripNotesSection').style.display = 'block';
                     document.getElementById('statusBtn').parentElement.style.display = 'flex';
                 }
-
-                // Checklist rendering removed as per user request
-                // renderChecklist(config); 
-                document.getElementById('mainTitle').innerText = config.title;
-                document.getElementById('subTitle').innerText = config.subtitle;
 
             } catch (error) {
                 console.error("無法讀取設定檔:", error);
