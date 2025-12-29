@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>越後湯澤滑雪清單 ❄️</title>
+    <title>出國準備清單</title>
     <style>
         :root {
             --primary-color: #3498db;
+            --daily-color: #9b59b6;
             --ski-color: #2c3e50;
             --ticket-color: #27ae60;
             --transport-color: #e67e22;
@@ -18,7 +19,7 @@
             font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: #333;
         }
 
@@ -26,13 +27,13 @@
             max-width: 500px;
             margin: 0 auto;
             background: var(--card-bg);
-            padding: 25px;
+            padding: 20px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
 
-        h1 { text-align: center; color: var(--ski-color); margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 20px; }
+        h1 { text-align: center; color: var(--ski-color); margin-bottom: 5px; font-size: 1.5em; }
+        .subtitle { text-align: center; color: #888; font-size: 0.85em; margin-bottom: 20px; }
 
         .progress-wrapper {
             position: sticky;
@@ -40,11 +41,12 @@
             background: var(--card-bg);
             padding: 10px 0;
             z-index: 10;
+            border-bottom: 1px solid #eee;
         }
         .progress-container {
             background-color: #eee;
             border-radius: 20px;
-            height: 12px;
+            height: 10px;
             overflow: hidden;
         }
         .progress-bar {
@@ -55,27 +57,29 @@
         }
 
         .category {
-            margin: 25px 0 10px 0;
-            padding: 5px 12px;
+            margin: 20px 0 10px 0;
+            padding: 6px 12px;
             background: #f1f3f5;
             border-radius: 8px;
             font-weight: bold;
-            color: var(--ski-color);
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
         }
 
         .item {
             display: flex;
             align-items: flex-start;
-            padding: 14px 10px;
+            padding: 12px 10px;
             border-bottom: 1px solid #f1f1f1;
             cursor: pointer;
         }
 
         input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-right: 15px;
-            margin-top: 2px;
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            margin-top: 3px;
         }
 
         input[type="checkbox"]:checked + .item-content span {
@@ -83,11 +87,12 @@
             color: #bbb;
         }
 
-        .item-content { display: flex; flex-direction: column; }
-        .item-desc { font-size: 0.75em; color: #666; margin-top: 4px; }
+        .item-content { display: flex; flex-direction: column; flex: 1; }
+        .item-title { font-size: 1em; }
+        .item-desc { font-size: 0.8em; color: #777; margin-top: 2px; }
 
         .link-tag {
-            font-size: 0.7em;
+            font-size: 0.75em;
             color: var(--primary-color);
             text-decoration: none;
             margin-top: 4px;
@@ -110,54 +115,79 @@
 <body>
 
 <div class="container">
-    <h1>❄️ 越後湯澤滑雪清單</h1>
-    <p class="subtitle">岩原．神立．神樂攻略</p>
+    <h1>✈️ 日本滑雪出征清單</h1>
+    <p class="subtitle">Tokyo & Echigo-Yuzawa</p>
 
     <div class="progress-wrapper">
         <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
-        <p style="text-align: center; font-size: 0.85em; margin: 8px 0;" id="progressText">載入中...</p>
+        <p style="text-align: center; font-size: 0.8em; margin: 8px 0;" id="progressText">0% 完成</p>
     </div>
 
     <div id="checklist">
-        <div class="category" style="color: var(--ticket-color);">🎟️ 雪票與預約</div>
-        
+        <div class="category" style="color: var(--daily-color);">👜 出國日常必備</div>
         <label class="item">
-            <input type="checkbox" id="tk_iwanappara">
+            <input type="checkbox" id="d_passport">
             <div class="item-content">
-                <span>岩原 (Iwappara) 雪票</span>
-                <span class="item-desc">適合新手、超寬廣平坦坡道</span>
-                <a href="https://iwanappara.com/" target="_blank" class="link-tag">🌐 官網連結</a>
+                <span class="item-title">核心證件</span>
+                <span class="item-desc">護照正本、小黃卡影本、保險英文證明</span>
+            </div>
+        </label>
+        <label class="item">
+            <input type="checkbox" id="d_money">
+            <div class="item-content">
+                <span class="item-title">錢財票卡</span>
+                <span class="item-desc">日幣現金、海外高回饋信用卡、實體 Suica</span>
+            </div>
+        </label>
+        <label class="item">
+            <input type="checkbox" id="d_electronics">
+            <div class="item-content">
+                <span class="item-title">電力與網路</span>
+                <span class="item-desc">行動電源、網卡/eSIM、多口充電頭、線材</span>
+            </div>
+        </label>
+        <label class="item">
+            <input type="checkbox" id="d_hygiene">
+            <div class="item-content">
+                <span class="item-title">個人護理</span>
+                <span class="item-desc">常備藥(止痛/感冒)、口罩、牙膏牙刷、刮鬍刀</span>
             </div>
         </label>
 
+        <div class="category" style="color: var(--transport-color);">🚄 交通票券確認</div>
+        <label class="item"><input type="checkbox" id="t_skyliner"><div class="item-content"><span>Skyliner 預約車票</span><span class="item-desc">機場至市區快速連線</span></div></label>
+        <label class="item"><input type="checkbox" id="t_shinkansen"><div class="item-content"><span>新幹線 / JR Pass</span><span class="item-desc">東京至越後湯澤指定席</span></div></label>
+        <label class="item"><input type="checkbox" id="t_vjw"><div class="item-content"><span>Visit Japan Web QR</span><span class="item-desc">入境與海關截圖</span></div></label>
+
+        <div class="category" style="color: var(--ticket-color);">🎟️ 湯澤雪場預訂</div>
         <label class="item">
-            <input type="checkbox" id="tk_kandatsu">
+            <input type="checkbox" id="tk_iwa">
             <div class="item-content">
-                <span>神立 (Kandatsu) 雪票</span>
-                <span class="item-desc">適合年輕人、公園(Park)設施多、有夜滑</span>
-                <a href="https://www.kandatsu.com/" target="_blank" class="link-tag">🌐 官網連結</a>
+                <span>岩原 (Iwappara) </span>
+                <a href="https://iwanappara.com/" target="_blank" class="link-tag">🌐 適合新手的超寬平原</a>
+            </div>
+        </label>
+        <label class="item">
+            <input type="checkbox" id="tk_kan">
+            <div class="item-content">
+                <span>神立 (Kandatsu) </span>
+                <a href="https://www.kandatsu.com/" target="_blank" class="link-tag">🌐 帥哥美女最多的 Park 聖地</a>
+            </div>
+        </label>
+        <label class="item">
+            <input type="checkbox" id="tk_kag">
+            <div class="item-content">
+                <span>神樂 (Kagura) </span>
+                <a href="https://www.princehotels.co.jp/ski/kagura/" target="_blank" class="link-tag">🌐 雪質保證，風景絕美</a>
             </div>
         </label>
 
-        <label class="item">
-            <input type="checkbox" id="tk_kagura">
-            <div class="item-content">
-                <span>神樂 (Kagura) 雪票</span>
-                <span class="item-desc">海拔高雪質好、春天也能滑、纜車超長</span>
-                <a href="https://www.princehotels.co.jp/ski/kagura/" target="_blank" class="link-tag">🌐 官網連結</a>
-            </div>
-        </label>
-
-        <div class="category" style="color: var(--transport-color);">🚄 交通票券</div>
-        <label class="item"><input type="checkbox" id="t_skyliner"><span>Skyliner 預約</span></label>
-        <label class="item"><input type="checkbox" id="t_shinkansen"><span>新幹線 / JR Pass 劃位</span></label>
-        <label class="item"><input type="checkbox" id="t_shuttle"><span>確認雪場接駁車時間</span></label>
-
-        <div class="category">🎿 滑雪裝備</div>
-        <label class="item"><input type="checkbox" id="s_h"><span>安全帽 / 雪鏡</span></label>
-        <label class="item"><input type="checkbox" id="s_c"><span>雪衣 / 雪褲 / 內搭</span></label>
-        <label class="item"><input type="checkbox" id="s_p"><span>護具 (防摔褲/護膝/護肘)</span></label>
-        <label class="item"><input type="checkbox" id="s_s"><span>滑雪長襪 / 防水手套</span></label>
+        <div class="category" style="color: var(--ski-color);">🎿 滑雪必帶裝備</div>
+        <label class="item"><input type="checkbox" id="s_h_g"><div class="item-content"><span>安全帽 & 雪鏡</span><span class="item-desc">雪鏡記得檢查海綿有無氧化</span></div></label>
+        <label class="item"><input type="checkbox" id="s_clothes"><div class="item-content"><span>雪衣雪褲 & 手套</span><span class="item-desc">手套建議兩雙替換，防寒要夠</span></div></label>
+        <label class="item"><input type="checkbox" id="s_inner"><div class="item-content"><span>發熱排汗層 & 滑雪長襪</span><span class="item-desc">襪子要過小腿高度，防摩擦</span></div></label>
+        <label class="item"><input type="checkbox" id="s_protect"><div class="item-content"><span>護具 (防摔褲/護膝)</span><span class="item-desc">特別是新手，護墊是保命符</span></div></label>
+        <label class="item"><input type="checkbox" id="s_skin"><div class="item-content"><span>雪地強效防曬 & 護唇膏</span><span class="item-desc">雪地反射強，不想曬傷必帶</span></div></label>
     </div>
 
     <button class="reset-btn" onclick="resetList()">清除所有勾選</button>
@@ -177,7 +207,7 @@
     }
 
     checkboxes.forEach(box => {
-        box.addEventListener('change', (e) => {
+        box.addEventListener('change', () => {
             localStorage.setItem(box.id, box.checked);
             updateProgress();
         });
@@ -192,7 +222,7 @@
     }
 
     function resetList() {
-        if(confirm("確定要重置嗎？")) {
+        if(confirm("確定要重置所有勾選嗎？")) {
             checkboxes.forEach(box => {
                 box.checked = false;
                 localStorage.removeItem(box.id);
