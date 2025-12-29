@@ -4,6 +4,7 @@
     "categories": [
         {
             "name": "🪪 核心證件與財務",
+            "sort": 0,
               "items": [
                 { "id": "c1", "label": "護照正本", "desc": "確認有效期限需大於 6 個月" },
                 { "id": "c2", "label": "身分證", "desc": "國內機場查驗備用" },
@@ -14,6 +15,7 @@
         },
         {
             "name": "🎿 滑雪專項",
+            "sort": 3,
             "items": [
                 { "id": "s_h_1", "label": "安全帽 (Helmet)", "desc": "檢查內襯是否完整，尺寸是否晃動" },
                 { "id": "s_h_2", "label": "雪鏡 (Goggles)", "desc": "防霧塗層檢查，雪地強光必備" },
@@ -30,6 +32,7 @@
         },
         {
             "name": "🚄 交通與住宿",
+            "sort": 2,
             "items": [
                 { "id": "t1", "label": "機場往返交通", "desc": "Skyliner / N'EX / 接駁車" },
                 { "id": "t2", "label": "長途交通票券", "desc": "新幹線 / JR Pass / 租車" },
@@ -37,8 +40,9 @@
             ]
         }
         {
-            "name": "🔌 電子設備",
+            "name": "電子設備",
             "id": "electronics",
+            "sort": 1,
             "items": [
                 { "id": "e1", "label": "行動電源", "desc": "不可托運，需隨身攜帶" },
                 { "id": "e2", "label": "eSIM / SIM 卡", "desc": "確認開通說明書已儲存" },
