@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本滑雪 2027 — 行程規劃比較</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #07111f;
+    --navy2:   #0d1e33;
+    --navy3:   #112740;
+    --ice:     #e8f0fa;
+    --frost:   #c5d8f0;
+    --gold:    #c9a84c;
+    --gold2:   #f0d080;
+    --white:   #f7f9fc;
+    --blue-a:  #2d7dd2;
+    --blue-b:  #1a5fa8;
+    --text:    #d4e4f7;
+    --text2:   #8fb0d4;
+    --red-a:   #e05c5c;
+    --green-a: #4caf8d;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'DM Sans', 'Noto Serif TC', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ─────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: radial-gradient(ellipse 120% 80% at 50% 110%, #1a3a5c 0%, #07111f 60%);
+  }
+
+  .hero-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    opacity: var(--op, 0.6);
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--op, 0.6); transform: scale(1); }
+    50%       { opacity: calc(var(--op, 0.6) * 0.3); transform: scale(0.7); }
+  }
+
+  .hero-mountain {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .hero-aurora {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 55%;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(29, 90, 160, 0.12) 40%,
+      transparent 100%
+    );
+    filter: blur(60px);
+    animation: aurora 8s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes aurora {
+    from { transform: translateX(-5%) scaleY(1); opacity: 0.6; }
+    to   { transform: translateX(5%) scaleY(1.15); opacity: 1; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.4s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold2);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--frost);
+    margin-top: 1.6rem;
+    letter-spacing: 0.06em;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.6s;
+  }
+
+  .hero-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 2.4rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 2rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    color: var(--gold2);
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.8s;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text2);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    z-index: 10;
+    animation: fadeIn 1s ease forwards 1.6s;
+    opacity: 0;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── LAYOUT ───────────────────────────────── */
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 3.5rem;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+    margin: 0;
+  }
+
+  /* ── COMPARISON CARDS ─────────────────────── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+
+  .plan-card {
+    background: linear-gradient(145deg, var(--navy2) 0%, var(--navy3) 100%);
+    border: 1px solid rgba(100,160,220,0.15);
+    border-radius: 1.2rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--blue-a), var(--gold));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .plan-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+  .plan-card:hover::before { opacity: 1; }
+
+  .card-header {
+    padding: 2rem 2rem 1.4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+  }
+
+  .card-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    background: rgba(45,125,210,0.2);
+    color: var(--blue-a);
+    border: 1px solid rgba(45,125,210,0.35);
+    border-radius: 2rem;
+    padding: 0.25rem 0.9rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .card-tag.tag-b {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold2);
+    border-color: rgba(201,168,76,0.35);
+  }
+
+  .card-plan-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-location {
+    font-size: 0.82rem;
+    color: var(--text2);
+    letter-spacing: 0.08em;
+  }
+
+  .card-body { padding: 1.6rem 2rem; }
+
+  .info-block {
+    margin-bottom: 1.8rem;
+  }
+
+  .info-block-title {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .info-block-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.2);
+  }
+
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--text);
+    margin-bottom: 0.55rem;
+  }
+
+  .info-icon {
+    font-size: 0.9rem;
+    margin-top: 0.05rem;
+    flex-shrink: 0;
+    width: 1.2rem;
+    text-align: center;
+  }
+
+  .price-highlight {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+  }
+
+  .price-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    color: var(--gold2);
+    line-height: 1;
+  }
+
+  .price-unit {
+    font-size: 0.82rem;
+    color: var(--text2);
+  }
+
+  .price-note {
+    font-size: 0.78rem;
+    color: var(--text2);
+    margin-top: 0.3rem;
+  }
+
+  .price-breakdown {
+    background: rgba(255,255,255,0.04);
+    border-radius: 0.7rem;
+    padding: 1rem 1.2rem;
+    margin-top: 0.8rem;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.83rem;
+    padding: 0.28rem 0;
+    color: var(--text);
+  }
+
+  .price-row.total {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 0.4rem;
+    padding-top: 0.6rem;
+    font-weight: 500;
+    color: var(--gold2);
+  }
+
+  .price-row .amt { color: var(--ice); }
+  .price-row.total .amt { color: var(--gold2); font-size: 1rem; }
+
+  .diff-bar-wrap {
+    margin-top: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .diff-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .diff-label {
+    width: 2.2rem;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+
+  .diff-bar {
+    flex: 1;
+    height: 5px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .diff-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1.2s ease;
+  }
+
+  .fill-green  { background: var(--green-a); }
+  .fill-blue   { background: var(--blue-a); }
+  .fill-red    { background: var(--red-a); }
+
+  .diff-pct {
+    width: 2.5rem;
+    text-align: right;
+    color: var(--text2);
+    font-size: 0.78rem;
+  }
+
+  .feature-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.7rem;
+  }
+
+  .ftag {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 2rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .route-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0.7rem;
+  }
+
+  .route-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    position: relative;
+  }
+
+  .route-step:not(:last-child) {
+    padding-bottom: 0.9rem;
+  }
+
+  .route-step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 0.55rem;
+    top: 1.3rem;
+    bottom: 0;
+    width: 1px;
+    background: rgba(45,125,210,0.35);
+  }
+
+  .route-dot {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    background: var(--blue-a);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    border: 2px solid var(--navy2);
+    position: relative;
+    z-index: 1;
+  }
+
+  .route-dot.dot-gold { background: var(--gold); }
+  .route-dot.dot-end  { background: var(--green-a); }
+
+  .route-text {
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .route-time {
+    font-size: 0.72rem;
+    color: var(--blue-a);
+    font-weight: 500;
+  }
+
+  .btn-book {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    border-radius: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    margin-top: 1rem;
+    border: none;
+  }
+
+  .btn-a {
+    background: linear-gradient(135deg, var(--blue-b), var(--blue-a));
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(45,125,210,0.35);
+  }
+
+  .btn-a:hover {
+    box-shadow: 0 8px 30px rgba(45,125,210,0.55);
+    transform: translateY(-1px);
+  }
+
+  .btn-b {
+    background: linear-gradient(135deg, #7a5c1e, var(--gold));
+    color: #1a1000;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+  }
+
+  .btn-b:hover {
+    box-shadow: 0 8px 30px rgba(201,168,76,0.5);
+    transform: translateY(-1px);
+  }
+
+  /* ── COST TABLE ───────────────────────────── */
+  .cost-section {
+    background: linear-gradient(180deg, var(--navy2) 0%, var(--navy) 100%);
+    padding: 5rem 0;
+  }
+
+  .cost-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin-top: 2rem;
+  }
+
+  .compare-table thead th {
+    padding: 1rem 1.4rem;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text2);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .compare-table thead th:not(:first-child) { text-align: center; }
+
+  .compare-table tbody td {
+    padding: 0.9rem 1.4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+    color: var(--text);
+  }
+
+  .compare-table tbody td:not(:first-child) { text-align: center; }
+
+  .compare-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .compare-table .td-label {
+    color: var(--text2);
+    font-size: 0.82rem;
+  }
+
+  .compare-table .td-a { color: var(--blue-a); font-weight: 500; }
+  .compare-table .td-b { color: var(--gold2); font-weight: 500; }
+
+  .compare-table tfoot td {
+    padding: 1.1rem 1.4rem;
+    font-weight: 500;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: 0.9rem;
+  }
+
+  .compare-table .th-a {
+    color: var(--blue-a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .compare-table .th-b {
+    color: var(--gold2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 2rem;
+    vertical-align: middle;
+  }
+
+  .badge-cheaper {
+    background: rgba(76,175,141,0.2);
+    color: var(--green-a);
+    border: 1px solid rgba(76,175,141,0.3);
+  }
+
+  .badge-faster {
+    background: rgba(45,125,210,0.2);
+    color: var(--blue-a);
+    border: 1px solid rgba(45,125,210,0.3);
+  }
+
+  .check-y { color: var(--green-a); }
+  .check-n { color: var(--red-a); }
+
+  /* ── RENTAL SECTION ───────────────────────── */
+  .rental-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .rental-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1rem;
+    padding: 1.6rem;
+    transition: border-color 0.25s;
+  }
+
+  .rental-card:hover { border-color: rgba(201,168,76,0.3); }
+
+  .rental-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .rental-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .rental-desc {
+    font-size: 0.83rem;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  .rental-price {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--gold2);
+    font-weight: 500;
+  }
+
+  /* ── NOTES SECTION ────────────────────────── */
+  .notes-section {
+    background: linear-gradient(135deg, #0a1a2e 0%, #071120 100%);
+    padding: 5rem 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .notes-inner { max-width: 1300px; margin: 0 auto; }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .note-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .note-num {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.5);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .note-content { flex: 1; }
+
+  .note-title {
+    font-weight: 500;
+    color: var(--white);
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .note-text {
+    font-size: 0.82rem;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  /* ── FOOTER ───────────────────────────────── */
+  footer {
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--text2);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  footer span { color: var(--gold); }
+
+  /* ── SNOW SEASON BAR ──────────────────────── */
+  .snow-bar-wrap {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .snow-bar-label {
+    font-size: 0.75rem;
+    color: var(--text2);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+
+  .snow-track {
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .snow-fill {
+    height: 100%;
+    border-radius: 4px;
+    position: absolute;
+  }
+
+  .snow-best {
+    background: linear-gradient(to right, #4a9eff, #c5e0ff);
+  }
+
+  .snow-target {
+    position: absolute;
+    top: -2px;
+    height: calc(100% + 4px);
+    background: rgba(201,168,76,0.6);
+    width: 3px;
+    border-radius: 2px;
+  }
+
+  .snow-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.78rem;
+  }
+
+  .snow-bar-month { width: 1.8rem; color: var(--text2); flex-shrink: 0; }
+
+  /* ── ANIMATE ON SCROLL ────────────────────── */
+  .aos {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .aos.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .aos-delay-1 { transition-delay: 0.1s; }
+  .aos-delay-2 { transition-delay: 0.2s; }
+  .aos-delay-3 { transition-delay: 0.3s; }
+
+  .weather-strip {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .weather-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--text);
+  }
+
+  .weather-icon { font-size: 1.1rem; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-aurora"></div>
+  <div class="hero-stars" id="stars"></div>
+
+  <svg class="hero-mountain" viewBox="0 0 1440 360" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+    <defs>
+      <linearGradient id="mtnGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#d0e8ff" stop-opacity="0.9"/>
+        <stop offset="30%" stop-color="#6baee0" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#07111f" stop-opacity="1"/>
+      </linearGradient>
+      <linearGradient id="mtnGrad2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#a8c8e8" stop-opacity="0.75"/>
+        <stop offset="100%" stop-color="#0d1e33" stop-opacity="1"/>
+      </linearGradient>
+      <linearGradient id="snowGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f0f8ff" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#c8e0f8" stop-opacity="0.4"/>
+      </linearGradient>
+    </defs>
+    <path d="M0 360 L120 260 L220 290 L340 180 L430 220 L560 130 L650 160 L760 100 L860 140 L960 90 L1050 120 L1180 60 L1280 100 L1380 80 L1440 110 L1440 360 Z" fill="url(#mtnGrad2)" opacity="0.5"/>
+    <path d="M0 360 L80 300 L180 320 L300 240 L400 260 L520 170 L620 200 L720 110 L800 150 L900 80 L1000 130 L1120 50 L1200 90 L1320 40 L1440 70 L1440 360 Z" fill="url(#mtnGrad)"/>
+    <path d="M1120 50 L1100 80 L1140 90 L1160 75 L1140 60 Z" fill="url(#snowGrad)"/>
+    <path d="M720 110 L700 135 L730 140 L748 125 L735 112 Z" fill="url(#snowGrad)" opacity="0.8"/>
+    <path d="M900 80 L882 108 L912 115 L928 98 L912 82 Z" fill="url(#snowGrad)" opacity="0.85"/>
+    <path d="M1320 40 L1302 65 L1330 72 L1346 55 L1328 42 Z" fill="url(#snowGrad)" opacity="0.9"/>
+    <path d="M0 360 L0 330 Q360 310 720 320 Q1080 330 1440 315 L1440 360 Z" fill="#07111f"/>
+    <path d="M0 360 L0 345 Q360 335 720 340 Q1080 345 1440 336 L1440 360 Z" fill="#0a1a2f" opacity="0.8"/>
+    <path d="M980 130 Q1000 200 1020 280 Q1030 320 1040 360" stroke="rgba(200,230,255,0.15)" stroke-width="1.5" fill="none"/>
+    <path d="M950 110 Q975 190 1000 270 Q1010 310 1015 360" stroke="rgba(200,230,255,0.1)" stroke-width="1" fill="none"/>
+    <g fill="#0d1e33" opacity="0.9">
+      <polygon points="60,345 70,310 80,345"/>
+      <polygon points="95,348 105,318 115,348"/>
+      <polygon points="130,346 140,320 150,346"/>
+      <polygon points="1300,348 1310,315 1320,348"/>
+      <polygon points="1330,346 1340,322 1350,346"/>
+      <polygon points="1360,350 1370,325 1380,350"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ 旅遊規劃 2027 ✦</p>
+    <h1 class="hero-title">日本<em>滑雪</em><br>行程比較</h1>
+    <p class="hero-sub">福島 × 長野　兩方案深度評估</p>
+    <div class="hero-date-badge">
+      ❄ &nbsp;2027 年 2 月 23 日（二）— 27 日（六）&nbsp;&nbsp;｜&nbsp;&nbsp;成田出發 ✦ 2 大人
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>向下探索</span>
+  </div>
+</section>
+
+<!-- COMPARISON CARDS -->
+<section style="padding: 6rem 2rem; max-width:1300px; margin:0 auto;">
+  <p class="section-label aos">方案對比</p>
+  <h2 class="section-title aos">選擇您的滑雪目的地</h2>
+
+  <div class="cards-grid">
+
+    <!-- CARD A -->
+    <div class="plan-card aos aos-delay-1">
+      <div class="card-header">
+        <span class="card-tag">方案 A ── 福島縣</span>
+        <h3 class="card-plan-name">磐梯山溫泉酒店</h3>
+        <p class="card-location">⛰ 星野集團 Hoshino Resorts Bandai｜福島縣耶麻郡磐梯町</p>
+      </div>
+      <div class="card-body">
+
+        <div class="info-block">
+          <p class="info-block-title">住宿費用</p>
+          <div class="price-highlight">
+            <span class="price-main">¥148,000</span>
+            <span class="price-unit">JPY / 2人4晚 合計</span>
+          </div>
+          <p class="price-note">※ 每人最低方案，實際依房型和加選方案而異</p>
+          <div class="price-breakdown">
+            <div class="price-row">
+              <span>2/23（二）× 2人</span>
+              <span class="amt">¥34,000</span>
+            </div>
+            <div class="price-row">
+              <span>2/24（三）× 2人</span>
+              <span class="amt">¥34,000</span>
+            </div>
+            <div class="price-row">
+              <span>2/25（四）× 2人</span>
+              <span class="amt">¥34,000</span>
+            </div>
+            <div class="price-row">
+              <span>2/26（五）× 2人</span>
+              <span class="amt">¥46,000</span>
+            </div>
+            <div class="price-row total">
+              <span>4晚 合計</span>
+              <span class="amt">¥148,000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <p class="info-block-title">房型選項（2人）</p>
+          <div class="info-row"><span class="info-icon">🛏</span><span>Modern Twin・29㎡</span></div>
+          <div class="info-row"><span class="info-icon">🏠</span><span>GOROGORO房（樓中樓）・52㎡</span></div>
+          <div class="info-row"><span class="info-icon">🏠</span><span>樓中樓房型・52㎡（剩1間）</span></div>
+          <div class="info-row"><span class="info-icon">⚠️</span><span style="color:var(--red-a)">雙層床房型已客滿，請提早確認</span></div>
+        </div>
+
+        <div class="info-block">
+          <p class="info-block-title">滑雪場｜ネコマ マウンテン</p>
+          <div class="info-row"><span class="info-icon">🎿</span><span>33 條滑道，初～高級均有</span></div>
+          <div class="info-row"><span class="info-icon">🏨</span><span>直連飯店，步行即達</span></div>
+          <div class="info-row"><span class="info-icon">👥</span><span>週末人潮較多，平日相對舒適</span></div>
+          <div class="info-row"><span class="info-icon">🎽</span><span>現場完整租借服務</span></div>
+          <div class="feature-tags">
+            <span class="ftag">🌋 火山地形</span>
+            <span class="ftag">❄ 粉雪豐富</span>
+            <span class="ftag">♨ 溫泉設施</span>
+            <span class="ftag">🏯 會津文化</span>
+          </div>
+          <div class="diff-bar-wrap" style="margin-top:1rem;">
+            <p style="font-size:0.75rem;color:var(--text2);margin-bottom:0.5rem;">滑道難度分布（估計）</p>
+            <div class="diff-bar-row">
+              <span class="diff-label">初級</span>
+              <div class="diff-bar"><div class="diff-fill fill-green" data-width="33%"></div></div>
+              <span class="diff-pct">≈33%</span>
+            </div>
+            <div class="diff-bar-row">
+              <span class="diff-label">中級</span>
+              <div class="diff-bar"><div class="diff-fill fill-blue" data-width="34%"></div></div>
+              <span class="diff-pct">≈34%</span>
+            </div>
+            <div class="diff-bar-row">
+              <span class="diff-label">高級</span>
+              <div class="diff-bar"><div class="diff-fill fill-red" data-width="33%"></div></div>
+              <span class="diff-pct">≈33%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <p class="info-block-title">交通路線（從成田出發）</p>
+          <div class="route-steps">
+            <div class="route-step">
+              <div class="route-dot"></div>
+              <div class="route-text">成田空港<br><span class="route-time">成田Express → 上野 約 60 分</span></div>
+            </div>
+            <div class="route-step">
+              <div class="route-dot"></div>
+              <div class="route-text">東北新幹線 上野→郡山<br><span class="route-time">約 90 分</span></div>
+            </div>
+            <div class="route-step">
+              <div class="route-dot"></div>
+              <div class="route-text">磐越西線 or 路線巴士<br><span class="route-time">郡山→猪苗代/磐梯町 約 40〜60 分</span></div>
+            </div>
+            <div class="route-step">
+              <div class="route-dot dot-end"></div>
+              <div class="route-text">磐梯山溫泉酒店（飯店接送）<br><span class="route-time">🕐 總計約 3.5〜4 小時</span></div>
+            </div>
+          </div>
+        </div>
+
+        <a href="https://hoshinoresorts.com/CH/hotels/0000000004/search?checkIn=2027%2F02%2F23&stay=4&a=2&b=0&c=0&d=0" target="_blank" class="btn-book btn-a">
+          ✦ 前往星野官網訂房
+        </a>
+
+      </div>
+    </div>
+
+    <!-- CARD B -->
+    <div class="plan-card aos aos-delay-2">
+      <div class="card-header">
+        <span class="card-tag tag-b">方案 B ── 長野縣</span>
+        <h3 class="card-plan-name">斑尾高原飯店</h3>
+        <p class="card-location">⛰ Madarao Kogen Hotel｜長野縣飯山市斑尾高原</p>
+      </div>
+      <div class="card-body">
+
+        <div class="info-block">
+          <p class="info-block-title">住宿費用（2人 4晚 總額）</p>
+          <div class="price-breakdown">
+            <div class="price-row">
+              <span>不含餐食方案</span>
+              <span class="amt">¥150,000</span>
+            </div>
+            <div class="price-row">
+              <span>含早餐方案</span>
+              <span class="amt">¥166,000</span>
+            </div>
+            <div class="price-row">
+              <span>僅含晚餐方案</span>
+              <span class="amt">¥186,000</span>
+            </div>
+            <div class="price-row">
+              <span>含兩餐方案</span>
+              <span class="amt">¥194,000</span>
+            </div>
+            <div class="price-row total">
+              <span>🏆 官網限定 含纜車票＋兩餐</span>
+              <span class="amt">¥250,000</span>
+            </div>
+          </div>
+          <p class="price-note" style="margin-top:0.6rem;">※ 以上均為 2 人 4 晚合計（本館日西式房型·無浴室）</p>
+        </div>
+
+        <div class="info-block">
+          <p class="info-block-title">房型選項</p>
+          <div class="info-row"><span class="info-icon">🛏</span><span>日西式房型（無浴室）・本館</span></div>
+          <div class="info-row"><span class="info-icon">🛌</span><span>西式房間</span></div>
+          <div class="info-row"><span class="info-icon">✨</span><span>套房</span></div>
+          <div class="info-row"><span class="info-icon">♨</span><span>露天浴池・大浴場完備</span></div>
+        </div>
+
+        <div class="info-block">
+          <p class="info-block-title">滑雪場｜斑尾高原スキー場</p>
+          <div class="info-row"><span class="info-icon">🎿</span><span>51 條滑道，規模宏大</span></div>
+          <div class="info-row"><span class="info-icon">❄</span><span>100% 天然雪，雪質極佳</span></div>
+          <div class="info-row"><span class="info-icon">🌙</span><span>夜滑：2/22-23 特別開放（抵達前夜）</span></div>
+          <div class="info-row"><span class="info-icon">🎽</span><span>白樺レンタルショップ（完整租借）</span></div>
+          <div class="feature-tags">
+            <span class="ftag">❄ 天然雪100%</span>
+            <span class="ftag">🌿 自然環境佳</span>
+            <span class="ftag">🌙 夜間滑雪</span>
+            <span class="ftag">😌 人潮較少</span>
+          </div>
+          <div class="diff-bar-wrap" style="margin-top:1rem;">
+            <p style="font-size:0.75rem;color:var(--text2);margin-bottom:0.5rem;">滑道難度分布</p>
+            <div class="diff-bar-row">
+              <span class="diff-label">初級</span>
+              <div class="diff-bar"><div class="diff-fill fill-green" data-width="30%"></div></div>
+              <span class="diff-pct">30%</span>
+            </div>
+            <div class="diff-bar-row">
+              <span class="diff-label">中級</span>
+              <div class="diff-bar"><div class="diff-fill fill-blue" data-width="35%"></div></div>
+              <span class="diff-pct">35%</span>
+            </div>
+            <div class="diff-bar-row">
+              <span class="diff-label">高級</span>
+              <div class="diff-bar"><div class="diff-fill fill-red" data-width="35%"></div></div>
+              <span class="diff-pct">35%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <p class="info-block-title">交通路線（從成田出發）</p>
+          <div class="route-steps">
+            <div class="route-step">
+              <div class="route-dot dot-gold"></div>
+              <div class="route-text">成田空港<br><span class="route-time">成田Express → 東京 約 60 分</span></div>
+            </div>
+            <div class="route-step">
+              <div class="route-dot dot-gold"></div>
+              <div class="route-text">北陸新幹線「かがやき」東京→飯山<br><span class="route-time">約 110 分</span></div>
+            </div>
+            <div class="route-step">
+              <div class="route-dot dot-gold"></div>
+              <div class="route-text">急行バス 飯山駅→斑尾高原ホテル<br><span class="route-time">約 22〜30 分</span></div>
+            </div>
+            <div class="route-step">
+              <div class="route-dot dot-end"></div>
+              <div class="route-text">斑尾高原飯店（直達）<br><span class="route-time">🕐 總計約 3〜3.5 小時</span></div>
+            </div>
+          </div>
+        </div>
+
+        <a href="https://d-reserve.jp/GSEA001F01300/GSEA001A01?hotelCode=0000001749&ghaLanding=true&lodgingDateFrom=20270223&lodgingDateTo=20270227&searchTagCode=&sumrm=1&dpck=false&pagingKey=1&sortKeyOrder=1&DPCheckEnable=false&lt001=0_1_2_3_4&lnum001=2_0_0_0_0" target="_blank" class="btn-book btn-b">
+          ✦ 前往斑尾高原官網訂房
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COST TABLE -->
+<section class="cost-section">
+  <div class="cost-inner">
+    <p class="section-label aos">費用總覽</p>
+    <h2 class="section-title aos">兩方案全費用比較</h2>
+
+    <table class="compare-table aos">
+      <thead>
+        <tr>
+          <th>比較項目</th>
+          <th><div class="th-a">🔵 方案 A — 星野盤梯</div></th>
+          <th><div class="th-b">🟡 方案 B — 斑尾高原</div></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-label">住宿費用（2人4晚）</td>
+          <td class="td-a">¥148,000 起 <span class="badge badge-cheaper">較低</span></td>
+          <td class="td-b">¥150,000 起</td>
+        </tr>
+        <tr>
+          <td class="td-label">含餐食方案</td>
+          <td>需加選（另計費）</td>
+          <td class="td-b">早餐 ¥166,000 ／兩餐 ¥194,000</td>
+        </tr>
+        <tr>
+          <td class="td-label">含纜車票方案</td>
+          <td>需現場單獨購買</td>
+          <td class="td-b">官網限定含纜車+兩餐 ¥250,000</td>
+        </tr>
+        <tr>
+          <td class="td-label">新幹線費用（2人來回 估）</td>
+          <td class="td-a">≈ ¥48,000</td>
+          <td class="td-b">≈ ¥44,000 <span class="badge badge-faster">稍省</span></td>
+        </tr>
+        <tr>
+          <td class="td-label">成田Express（2人來回）</td>
+          <td class="td-a">≈ ¥6,000</td>
+          <td class="td-b">≈ ¥6,000</td>
+        </tr>
+        <tr>
+          <td class="td-label">雪具租借（2人 × 4天）</td>
+          <td class="td-a">¥32,000〜64,000</td>
+          <td class="td-b">¥32,000〜64,000</td>
+        </tr>
+        <tr>
+          <td class="td-label">纜車票（2人 × 4天）</td>
+          <td class="td-a">≈ ¥40,000</td>
+          <td class="td-b">含方案 or 另購 ≈ ¥40,000</td>
+        </tr>
+        <tr>
+          <td class="td-label">總交通時間（成田出發）</td>
+          <td class="td-a">約 3.5〜4 小時</td>
+          <td class="td-b">約 3〜3.5 小時 <span class="badge badge-faster">較快</span></td>
+        </tr>
+        <tr>
+          <td class="td-label">滑道數量</td>
+          <td class="td-a">33 條</td>
+          <td class="td-b">51 條 <span class="badge badge-cheaper">更多</span></td>
+        </tr>
+        <tr>
+          <td class="td-label">雪質</td>
+          <td class="td-a">火山粉雪，優</td>
+          <td class="td-b">100% 天然雪，極佳</td>
+        </tr>
+        <tr>
+          <td class="td-label">飯店直連雪場</td>
+          <td class="td-a"><span class="check-y">✓</span> 直連</td>
+          <td class="td-b"><span class="check-y">✓</span> 直連</td>
+        </tr>
+        <tr>
+          <td class="td-label">溫泉設施</td>
+          <td class="td-a"><span class="check-y">✓</span> 完備</td>
+          <td class="td-b"><span class="check-y">✓</span> 露天浴池</td>
+        </tr>
+        <tr>
+          <td class="td-label">夜間滑雪</td>
+          <td class="td-a"><span class="check-n">✗</span> 無</td>
+          <td class="td-b"><span class="check-y">✓</span> 2/22-23 開放</td>
+        </tr>
+        <tr>
+          <td class="td-label">週末人潮</td>
+          <td class="td-a">較多</td>
+          <td class="td-b">相對安靜</td>
+        </tr>
+        <tr>
+          <td class="td-label">文化體驗</td>
+          <td class="td-a">會津歷史文化 🏯</td>
+          <td class="td-b">長野自然秘境 🌿</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="td-label">預估總費用（2人4晚 含交通）</td>
+          <td class="td-a" style="font-size:1.05rem;">¥274,000〜342,000</td>
+          <td class="td-b" style="font-size:1.05rem;">¥268,000〜336,000</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RENTAL -->
+<section style="padding:5rem 2rem; max-width:1300px; margin:0 auto;">
+  <p class="section-label aos">裝備準備</p>
+  <h2 class="section-title aos">雪具租借建議</h2>
+
+  <div class="rental-grid">
+    <div class="rental-card aos aos-delay-1">
+      <div class="rental-icon">🏔</div>
+      <h3 class="rental-title">飯店內租借</h3>
+      <p class="rental-desc">兩間飯店均提供現場完整租借服務，方便性最高，無需攜帶重裝行李。缺點是費用略高，旺季熱門款式可能需提前預約。</p>
+      <p class="rental-price">約 ¥5,000〜8,000 /人/天</p>
+    </div>
+    <div class="rental-card aos aos-delay-2">
+      <div class="rental-icon">🛒</div>
+      <h3 class="rental-title">網路預訂（推薦）</h3>
+      <p class="rental-desc">提前透過 <strong>SKISET</strong> 或 <strong>Rhythm Snowsports</strong> 線上預約，可比現場便宜 20〜30%，且能保證取得想要的款式和尺寸。</p>
+      <p class="rental-price">約 ¥4,000〜6,000 /人/天</p>
+    </div>
+    <div class="rental-card aos aos-delay-3">
+      <div class="rental-icon">🎿</div>
+      <h3 class="rental-title">完整套裝內容</h3>
+      <p class="rental-desc">標準滑雪套裝：雪板（或單板）＋雪鞋＋雪杖。建議加租護目鏡、安全帽。2月下旬帽子手套仍不可或缺。</p>
+      <p class="rental-price">2人 × 4天 ≈ ¥32,000〜64,000</p>
+    </div>
+    <div class="rental-card aos">
+      <div class="rental-icon">📅</div>
+      <h3 class="rental-title">預訂時程建議</h3>
+      <p class="rental-desc">2月是日本滑雪旺季，建議出發前 <strong>至少 1〜2 個月</strong> 完成預約。若自備雪具，請確認航空公司行李超規費用。</p>
+      <div class="weather-strip">
+        <div class="weather-item"><span class="weather-icon">🌨</span><span>2月雪況最佳</span></div>
+        <div class="weather-item"><span class="weather-icon">🌡</span><span>氣溫約 -8〜-2°C</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SNOW SEASON -->
+<section style="padding: 5rem 2rem; max-width:1300px; margin:0 auto;">
+  <p class="section-label aos">雪況參考</p>
+  <h2 class="section-title aos">2月下旬的雪況條件</h2>
+  <div class="aos" style="max-width:680px;">
+    <p style="color:var(--text2);font-size:0.9rem;line-height:1.8;margin-bottom:1.5rem;">
+      日本 2 月下旬通常是積雪量最高峰後的穩定期。長野縣斑尾受日本海冬季季風影響，天然雪量龐大；福島磐梯山則以乾燥輕盈的粉雪著稱，滑雪手感極佳。
+    </p>
+    <div class="snow-bar-wrap">
+      <p class="snow-bar-label">月份積雪量趨勢（示意）</p>
+      <div class="snow-bar-row">
+        <span class="snow-bar-month">12月</span>
+        <div class="snow-track" style="flex:1">
+          <div class="snow-fill snow-best" style="left:0;width:40%"></div>
+        </div>
+      </div>
+      <div class="snow-bar-row">
+        <span class="snow-bar-month">1月</span>
+        <div class="snow-track" style="flex:1">
+          <div class="snow-fill snow-best" style="left:0;width:80%"></div>
+        </div>
+      </div>
+      <div class="snow-bar-row">
+        <span class="snow-bar-month">2月</span>
+        <div class="snow-track" style="flex:1">
+          <div class="snow-fill snow-best" style="left:0;width:95%"></div>
+          <div class="snow-target" style="left:85%"></div>
+        </div>
+      </div>
+      <div class="snow-bar-row">
+        <span class="snow-bar-month">3月</span>
+        <div class="snow-track" style="flex:1">
+          <div class="snow-fill snow-best" style="left:0;width:55%"></div>
+        </div>
+      </div>
+      <p style="font-size:0.72rem;color:var(--gold);margin-top:0.5rem;">│ = 您的行程時段（2/23）</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- NOTES -->
+<section class="notes-section">
+  <div class="notes-inner">
+    <p class="section-label aos">行前注意</p>
+    <h2 class="section-title aos">重要提醒事項</h2>
+    <div class="notes-grid">
+      <div class="note-item aos aos-delay-1">
+        <div class="note-num">1</div>
+        <div class="note-content">
+          <p class="note-title">提早預訂住宿</p>
+          <p class="note-text">2月是旺季，熱門房型容易售罄。星野盤梯的「雙層床房型」已顯示客滿，建議立即確認其他房型。</p>
+        </div>
+      </div>
+      <div class="note-item aos aos-delay-2">
+        <div class="note-num">2</div>
+        <div class="note-content">
+          <p class="note-title">新幹線提早購票</p>
+          <p class="note-text">北陸新幹線「かがやき」班次有限，越早訂越省錢（IC 早割最多打 6 折）。JR Pass 是否適用請事先確認。</p>
+        </div>
+      </div>
+      <div class="note-item aos">
+        <div class="note-num">3</div>
+        <div class="note-content">
+          <p class="note-title">旅遊保險</p>
+          <p class="note-text">滑雪屬高風險活動，務必確認信用卡或另購旅遊保險有涵蓋滑雪相關意外及醫療費用。</p>
+        </div>
+      </div>
+      <div class="note-item aos aos-delay-1">
+        <div class="note-num">4</div>
+        <div class="note-content">
+          <p class="note-title">成田出發策略</p>
+          <p class="note-text">建議搭乘首班成田Express，抵達東京後換乘新幹線，可確保當天下午抵達滑雪場，爭取第一天下午滑雪時段。</p>
+        </div>
+      </div>
+      <div class="note-item aos aos-delay-2">
+        <div class="note-num">5</div>
+        <div class="note-content">
+          <p class="note-title">交通費準備</p>
+          <p class="note-text">日本滑雪場部分纜車或小店仍使用現金，建議備有日圓現金。Suica / PASMO 可用於大眾交通。</p>
+        </div>
+      </div>
+      <div class="note-item aos">
+        <div class="note-num">6</div>
+        <div class="note-content">
+          <p class="note-title">服裝準備</p>
+          <p class="note-text">2月氣溫約 -8〜-2°C，需準備雪衣雪褲、防水手套、護目鏡、安全帽（建議租借）。保暖底層衣物不可或缺。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>日本滑雪行程規劃比較 ✦ <span>2027 年 2 月 23〜27 日</span> ✦ 成田出發 · 2 大人</p>
+  <p style="margin-top:0.4rem;font-size:0.7rem;">以上費用為查詢當下最低方案，實際請以各官網為準 ｜ 資料查詢日期：2026.05.20</p>
+</footer>
+
+<script>
+  // Stars
+  const starContainer = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*70}%;left:${Math.random()*100}%;--op:${(Math.random()*0.5+0.2).toFixed(2)};--dur:${(Math.random()*4+2).toFixed(1)}s;--delay:${(Math.random()*5).toFixed(1)}s;`;
+    starContainer.appendChild(s);
+  }
+
+  // Scroll-triggered fade
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.aos').forEach(el => observer.observe(el));
+
+  // Diff bars animate on scroll
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.diff-fill').forEach(fill => {
+          const w = fill.getAttribute('data-width') || '0%';
+          fill.style.width = '0%';
+          requestAnimationFrame(() => {
+            setTimeout(() => { fill.style.width = w; }, 80);
+          });
+        });
+        barObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.diff-bar-wrap').forEach(el => barObserver.observe(el));
+</script>
+</body>
+</html>
